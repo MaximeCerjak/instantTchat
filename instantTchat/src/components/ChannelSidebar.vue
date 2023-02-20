@@ -107,7 +107,7 @@
         margin-bottom: 50px;
         padding: 10px 20px 10px 35px;
         text-align: center;
-        scrollbar-width: 1px;
+        scrollbar-width: none;
         scrollbar-color: #252525 #181818;
     }
 
@@ -123,7 +123,7 @@
         width: 100%;
         overflow-y:scroll;
         overflow-x: hidden;
-        scrollbar-width: 1px;
+        scrollbar-width: none;
         scrollbar-color: #252525 #181818;
     }
 
