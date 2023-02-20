@@ -5,25 +5,28 @@
           <img src="./public/assets/logo-coq.png" alt="logo" />
         </p>
         <h1>InstanChat</h1>
+        <Menu />
         <button @click="logout" class="logout-btn">Logout</button>
       </header>
       <main>
-          <sidebar :channels="channels" :members="members" />
-          <router-view :user="user" :channels="channels" />
-          <home />
+        <sidebar :channels="channels" />
+        <router-view :user="user" :channels="channels" />
+        <home />
       </main>
       </div>
 </template>
   
 <script>
-  import Sidebar from './components/Sidebar.vue';
+  import Sidebar from './components/ChannelSidebar.vue';
   import Home from './components/Home.vue';
+  import Menu from './components/Layout/Menu.vue';
   
   export default {
       name: 'App',
       components: {
       Sidebar,
-      Home
+      Home,
+      Menu
       },
       props: {
       user: {
