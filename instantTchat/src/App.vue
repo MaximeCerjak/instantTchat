@@ -1,87 +1,86 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-
-</script>
-
 <template>
-  <div>
-    <header>
-      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-  
-      <div class="wrapper">
-        <HelloWorld msg="You did it!" />
-  
-        <nav>
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-        </nav>
+  <div id="app">
+      <header>
+        <p class="logo-block">
+          <img src="./public/assets/logo-coq.png" alt="logo" />
+        </p>
+        <h1>InstanChat</h1>
+        <button @click="logout" class="logout-btn">Logout</button>
+      </header>
+      <main>
+          <sidebar :channels="channels" :members="members" />
+          <router-view :user="user" :channels="channels" />
+          <home />
+      </main>
       </div>
-    </header>
-  
-    <RouterView />
-  </div>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+  
+<script>
+  import Sidebar from './components/Sidebar.vue';
+  import Home from './components/Home.vue';
+  
+  export default {
+      name: 'App',
+      components: {
+      Sidebar,
+      Home
+      },
+      props: {
+      user: {
+          type: Object,
+          required: true
+      },
+      channels: {
+          type: Array,
+          required: true
+      },
+      members: {
+          type: Array,
+          required: true
+      }
+      },
+      methods: {
+      logout() {
+          // code pour déconnecter l'utilisateur
+      }
+      }
+  };
+</script>
+  
+<style>
+  #app {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #333;
+  }
+  
+  main {
+      display: flex;
+      flex: 1;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
+  .logout-btn {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      height: 40px;
+      margin: auto 0;
   }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+  .logo-block {
+      width: 60px;
+      height: 60px;
+      margin: auto 0;
   }
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+  .logo-block img {
+      width: 100%;
+      height: 100%;
   }
-}
 </style>
