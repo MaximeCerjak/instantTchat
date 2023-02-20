@@ -155,7 +155,8 @@
         width: 74%;
         background-color: #494646;
         text-align: center;
-        overflow: scroll;
+        overflow-y: scroll;
+        scrollbar-width:none;
     }
 
     .main-content {
