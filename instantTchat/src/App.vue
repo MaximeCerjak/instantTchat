@@ -5,25 +5,28 @@
           <img src="./public/assets/logo-coq.png" alt="logo" />
         </p>
         <h1>InstanChat</h1>
+        <Menu />
         <button @click="logout" class="logout-btn">Logout</button>
       </header>
       <main>
-          <sidebar :channels="channels" :members="members" />
-          <router-view :user="user" :channels="channels" />
-          <home />
+        <sidebar :channels="channels" />
+        <router-view :user="user" :channels="channels" />
+        <home />
       </main>
       </div>
 </template>
-  
+
 <script>
-  import Sidebar from './components/Sidebar.vue';
+  import Sidebar from './components/ChannelSidebar.vue';
   import Home from './components/Home.vue';
+  import Menu from './components/Layout/Menu.vue';
   
   export default {
       name: 'App',
       components: {
       Sidebar,
-      Home
+      Home,
+      Menu
       },
       props: {
       user: {
@@ -46,41 +49,41 @@
       }
   };
 </script>
-  
+
 <style>
-  #app {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      background-color: #333;
-  }
-  
-  main {
-      display: flex;
-      flex: 1;
-  }
+#app {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #333;
+}
 
-  .logout-btn {
-      background-color: #333;
-      color: #fff;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1.2rem;
-      height: 40px;
-      margin: auto 0;
-  }
+main {
+    display: flex;
+    flex: 1;
+}
 
-  .logo-block {
-      width: 60px;
-      height: 60px;
-      margin: auto 0;
-  }
+.logout-btn {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    height: 40px;
+    margin: auto 0;
+}
 
-  .logo-block img {
-      width: 100%;
-      height: 100%;
-  }
+.logo-block {
+    width: 60px;
+    height: 60px;
+    margin: auto 0;
+}
+
+.logo-block img {
+    width: 100%;
+    height: 100%;
+}
 </style>
