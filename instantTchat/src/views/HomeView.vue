@@ -1,9 +1,9 @@
 <script setup>
-import Sidebar from '../components/ChannelSidebar.vue';
+import ChannelSidebar from '../components/ChannelSidebar.vue';
 </script>
 
 <template>
   <main>
-    <Sidebar />
+    <ChannelSidebar />
   </main>
 </template>
