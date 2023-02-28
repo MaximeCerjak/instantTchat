@@ -1,9 +1,9 @@
 <template>
      <div class="menu">
-            <button @click="showFriends">Friends</button>
-            <button @click="showNewMessage">New messages<span class="sticker-notif">{{ newMessage }}</span></button>
-            <button @click="showAllConversations">All conversations</button>
-            <button @click="showInvitation">Invitation<span class="sticker-notif">{{ invitation }}</span></button> 
+            <button @click="showFriends" id="un">Friends</button>
+            <button @click="showNewMessage" id="deux">New messages<span class="sticker-notif">{{ newMessage }}</span></button>
+            <button @click="showAllConversations" id="trois">All conversations</button>
+            <button @click="showInvitation" id="quatre">Invitation<span class="sticker-notif">{{ invitation }}</span></button> 
         </div>
          
         <div class="main-content">
@@ -124,13 +124,41 @@
     }
 
     .menu button {
-        background-color: #333;
+        background-color: #5e5e5e;
         color: #fff;
         border: none;
         font-size: 1rem;
         cursor: pointer;
-        padding: 2px 5px;
+        padding: 2px 20px;
         border-radius: 5px;
+    }
+
+    #un  {
+        background-color: rgb(77, 130, 198);
+    }
+    #un:hover {
+        background-color: rgb(63, 107, 164);
+    }
+
+    #deux  {
+        background-color: rgb(81, 198, 77);
+    }
+    #deux:hover {
+        background-color: rgb(67, 164, 63);
+    }
+
+    #trois  {
+        background-color: rgb(211, 164, 43);
+    }
+    #trois:hover {
+        background-color: rgb(164, 127, 32);
+    }
+
+    #quatre  {
+        background-color: rgb(233, 116, 220);
+    }
+    #quatre:hover {
+        background-color: rgb(183, 91, 173);
     }
 
     .sticker-notif {

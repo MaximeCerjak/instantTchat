@@ -65,15 +65,19 @@ main {
 }
 
 .logout-btn {
-    background-color: #333;
+    background-color: #ce040484;
     color: #fff;
     border: none;
-    padding: 5px 10px;
+    padding: 5px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1.2rem;
     height: 40px;
     margin: auto 0;
+}
+
+.logout-btn:hover {
+    background-color: rgba(112, 250, 112, 0.707);
 }
 
 .logo-block {
