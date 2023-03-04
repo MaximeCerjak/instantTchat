@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import ChannelSidebar from '../components/ChannelSidebar.vue';
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <ChannelSidebar />
   </main>
 </template>

@@ -1,87 +1,92 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-
-</script>
-
 <template>
-  <div>
-    <header>
-      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-  
-      <div class="wrapper">
-        <HelloWorld msg="You did it!" />
-  
-        <nav>
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-        </nav>
-      </div>
-    </header>
-  
-    <RouterView />
-  </div>
+    <div id="app">
+        <header>
+            <p class="logo-block">
+                <img src="./public/assets/logo-coq.png" alt="logo" />
+            </p>
+            <h1>InstanChat</h1>
+            <Menu />
+        </header>
+        <main>
+            <div v-if="userStore.isAuthenticated">
+                <!-- Afficher la vue HomeView si l'utilisateur est connecté -->
+                <HomeView />
+            </div>
+            <div v-else>
+                <!-- Afficher la vue LoginView si l'utilisateur n'est pas connecté -->
+                <LoginView />
+            </div>
+        </main>
+    </div>
+    <div>
+
+    </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script setup>
+import HomeView from './views/HomeView.vue';
+import LoginView from './views/LoginView.vue';
+import { useUserStore } from './stores/auth-store';
+import Menu from './components/Layout/Menu.vue';
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+const userStore = useUserStore();
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+const props = defineProps({
+    user: {
+        type: Object,
+        required: true
+    },
+    channels: {
+        type: Array,
+        required: true
+    },
+    members: {
+        type: Array,
+        required: true
+    }
+});
+</script>
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
+<style>
+#app {
+    margin: 0;
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+    flex-direction: column;
+    height: 100vh;
+    background-color: #333;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
+main {
     display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
+.logout-btn {
+    background-color: #ce040484;
+    color: #fff;
+    border: none;
+    padding: 5px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    height: 40px;
+    margin: auto 0;
+}
 
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.logout-btn:hover {
+    background-color: rgba(112, 250, 112, 0.707);
+}
+
+.logo-block {
+    width: 60px;
+    height: 60px;
+    margin: auto 0;
+}
+
+.logo-block img {
+    width: 100%;
+    height: 100%;
 }
 </style>
