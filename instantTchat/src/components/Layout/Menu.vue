@@ -1,51 +1,9 @@
 <template>
-     <div class="menu">
+        <div class="menu">
             <button @click="showFriends" id="un">Friends</button>
             <button @click="showNewMessage" id="deux">New messages<span class="sticker-notif">{{ newMessage }}</span></button>
             <button @click="showAllConversations" id="trois">All conversations</button>
             <button @click="showInvitation" id="quatre">Invitation<span class="sticker-notif">{{ invitation }}</span></button> 
-        </div>
-         
-        <div class="main-content">
-            <div v-if="friendModal">
-                <div class="div-content friends">
-                    <h2>Friends</h2>
-                    <button class="add-btn" @click="addFriendForm">Ajouter</button>
-                    <div class="friend-list" v-if="friendListOpen">
-                        <button class="friend-list-more" @click="showFriendList">-</button>
-                        <div class="friend-block">
-                            <div v-for="friend in friends" :key="friend.id">
-                                <div class="span-grp" @click="selectConversation(friend.id)">
-                                    <span class="avatar-friend">{{ friend.name.charAt(0).toUpperCase() }}</span>
-                                    <span class="status-sticker-friend" :class="friend.status"></span>
-                                    <span class="member-name">{{ friend.name }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="friend-list-more" @click="showFriendList">...</button>
-                </div>
-            </div>
-            <div v-if="allConversationsModal">
-                <div class="div-content conversations">
-                    <h2>Conversations</h2>
-                    <ul>
-                        <li v-for="conversation in conversations" :key="conversation.id">
-                            {{ conversation.content }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div v-if="invitationModal">
-                <div class="div-content invitations">
-                    <h2>Invitations</h2>
-                    <ul>
-                        <li v-for="invitation in invitations" :key="invitation.id">
-                            {{ invitation.content }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
         </div>
 </template>
 

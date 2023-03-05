@@ -1,19 +1,19 @@
 <script>
-import { useUserStore } from '../stores/auth-store'
+import useAuthStore from '../stores/auth-store'
 import { ref } from 'vue'
 
 
 export default {
   setup() {
 
-    const userStore = useUserStore()
+    const authStore = useAuthStore()
 
     const username = ref('')
     const password = ref('')
 
     const submitForm = async () => {
       try {
-        await userStore.login({ username: username.value, password: password.value })
+        await authStore.login({ username: username.value, password: password.value })
         // rediriger l'utilisateur vers une page sécurisée
       } catch (error) {
         console.error(error)
