@@ -97,7 +97,6 @@ initialize();
     left: 0;
     height: 100%;
     background-color: #333;
-    width: 26%;
 }
 
 .sb-channels {
@@ -115,32 +114,6 @@ initialize();
     text-align: center;
     scrollbar-width: none;
     scrollbar-color: #252525 #181818;
-}
-
-.sb-members {
-    display:flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 10px 20px;
-    background-color: #252525;
-    width: 85%;
-    color: whitesmoke;
-    width: 100%;
-    overflow-y:scroll;
-    overflow-x: hidden;
-    scrollbar-width: none;
-    scrollbar-color: #252525 #181818;
-}
-
-.header-members {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 10px;
-    font-size: 1.2rem;
 }
 
 h2 {
@@ -163,49 +136,10 @@ router-link {
     text-decoration: none;
 }
 
-.member-li {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin: 15px 0;
-    width:100%;
+button {
+    border-style: none;
+    border-radius: 20px;
+    background-color: #b0b0b0a4;
+    margin-bottom: 5px;
 }
-
-.member-ul {
-    width: 100%;
-}
-
-.delete-button {
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #333;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    color: #ccc;
-    font-weight: bold;
-    font-size: 0.8rem;
-}
-
-.delete-button:hover {
-    background-color: #dc3545;
-}
-
-.span-grp {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.btn-grp {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 0;
-}
-
 </style>

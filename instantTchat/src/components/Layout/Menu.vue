@@ -43,33 +43,6 @@
         invitationModal.value = !invitationModal.value;
     }
 
-
-    const friends = [
-        { id: 1, name: 'John', status: 'online' },
-        { id: 2, name: 'Paul', status: 'offline' },
-        { id: 3, name: 'Vincent', status: 'online' },
-        { id: 4, name: 'Pierre', status: 'offline' },
-        { id: 5, name: 'Jacques', status: 'online' },
-        { id: 6, name: 'Jean', status: 'offline' },
-        { id: 7, name: 'Pierre', status: 'online' },
-        { id: 8, name: 'Paul', status: 'offline' },
-        { id: 9, name: 'Jacques', status: 'online' },
-        { id: 10, name: 'Vincent', status: 'offline' },
-        { id: 11, name: 'Jean', status: 'online' },
-        { id: 12, name: 'Pierre', status: 'offline' },
-        { id: 13, name: 'Paul', status: 'online' },
-        { id: 14, name: 'Jacques', status: 'offline' },
-        { id: 15, name: 'Vincent', status: 'online' },
-        { id: 16, name: 'Jean', status: 'offline' },
-        { id: 17, name: 'Pierre', status: 'online' },
-        { id: 18, name: 'Paul', status: 'offline' },
-        { id: 19, name: 'Jacques', status: 'online' },
-        { id: 20, name: 'Vincent', status: 'offline' },
-        { id: 21, name: 'Jean', status: 'online' },
-    ]
-
-    const invitation = 5;
-
 </script>
 
 <style scoped>
@@ -82,7 +55,6 @@
     }
 
     .menu button {
-        background-color: #5e5e5e;
         color: #fff;
         border: none;
         font-size: 1rem;
@@ -118,7 +90,6 @@
     #quatre:hover {
         background-color: rgb(183, 91, 173);
     }
-
     .sticker-notif {
         background-color: rgb(206, 21, 21);
         color: #fff;
@@ -127,11 +98,6 @@
         margin-left: 5px;
         font-size: 0.8rem;
     }
-
-    .menu button:hover {
-        background-color: rgb(151, 44, 44);
-    }
-
     .menu button:focus {
         outline: none;
     }
