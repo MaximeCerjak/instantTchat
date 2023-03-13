@@ -13,6 +13,5 @@ console.log(authStore);
 <template>
   <main>
     <Channel />
-    <Chat />
   </main>
 </template>

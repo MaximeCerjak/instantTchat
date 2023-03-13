@@ -49,16 +49,28 @@ export default {
   width: 300px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
   border-radius: 5px;
 }
 
 .connectBtn {
-  background-color: #333;
+  background-color: rgb(51, 51, 51);
   color: #fff;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
   margin-top: 10px;
+}
+
+.connectBtn:hover {
+  background-color: #605f5f;
+}
+
+#username, #password {
+  border-style: none;
+  border-radius: 5px;
+  padding: 2px 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 </style>
