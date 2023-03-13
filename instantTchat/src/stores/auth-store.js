@@ -13,13 +13,14 @@ const useAuthStore = defineStore({
         isAuthenticated: state => !!state.token //Vérifie la pésence du token
     },
     actions: {
-        async login(username, password) {
+        async login(params) {
             console.log("login user")
-            const response = await login(username, password)
-            console.log(response.token)
-            this.token = response.token
-            this.username = username
+            console.log(params.username)
+            const response = await login(params);
+            this.token = response.token;
+            this.username = params.username;
             localStorage.setItem('token', response.token);
+            localStorage.setItem('username', params.username);
             /* Set a timeout to refresh the session before it expires. (in 2h50) */
             setTimeout(() => {
                 extendSession(this.token)
@@ -40,6 +41,7 @@ const useAuthStore = defineStore({
             // Arrêter le renouvellement de session
             // stopSessionRenewal()
             localStorage.removeItem('token');
+            localStorage.removeItem('username');
             window.location.reload();
         },
         fetchToken() {
