@@ -33,7 +33,7 @@ const useChannelStore = defineStore({
         },
         async createChannel(token, params) {
             try {
-                const response = await api.put('/protected/user/channels', params, {
+                const response = await api.put('/protected/channel', params, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

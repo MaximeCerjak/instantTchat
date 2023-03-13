@@ -4,8 +4,6 @@
         <form @submit.prevent="createChannel" class="add-canal">
             <label for="name">Name</label>
             <input type="text" id="name" v-model="name" />
-            <label for="img">Image</label>
-            <input type="file" id="img" />
             <button type="submit">Create</button>
         </form>
         <Channel />
@@ -16,6 +14,7 @@
 import useChannelStore from '../stores/channel-store.js';
 import { ref } from 'vue';
 import Channel from '../components/Channel.vue';
+import router from '../router';
 
 const channelStore = useChannelStore();
 
@@ -25,8 +24,6 @@ const username = localStorage.getItem('username');
 console.log(username)
 
 const name = ref('');
-const img = ref('');
-const creator = ref('');
 const primary_color = ref('');
 const primary_color_dark = ref('');
 const accent_color = ref('');
@@ -37,18 +34,18 @@ const users = ref('');
 const createChannel = async () => {
     const channel = {
         name: name.value,
-        img: img.value,
-        creator: creator.value,
-        theme: {
-            primary_color: primary_color.value,
-            primary_color_dark: primary_color_dark.value,
-            accent_color: accent_color.value,
-            text_color: text_color.value,
-            accent_text_color: accent_text_color.value
-        },
-        users: users.value
+        img: "https://example.com/image.jpg",
+        // theme: {
+        //     primary_color: primary_color.value,
+        //     primary_color_dark: primary_color_dark.value,
+        //     accent_color: accent_color.value,
+        //     text_color: text_color.value,
+        //     accent_text_color: accent_text_color.value
+        // },
+        // users: users.value
     }
     await channelStore.createChannel(token, channel);
+    router.push('/');
 }
 </script>
 
