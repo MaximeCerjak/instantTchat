@@ -1,66 +1,13 @@
-<template>
-    <div class="sidebar"> 
-        <div class="sb-channels">
-            <h2>Channels</h2>
-                <ul>
-                    <li v-for="channel in channels" :key="channel.id">
-                    <!-- <router-link :to="{ name: 'channel', params: { id: channel.id } }"> -->
-                        {{ channel.name }}
-                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
-                    <!-- </router-link> -->
-                    </li>
-                </ul>
-        </div>      
-    </div>
-</template>
-    
 <script setup>
-    import { defineProps } from 'vue'
+    import {getChannel} from '../services/salon/salon'
+    import { ref } from 'vue'
+    const members = []
 
-    const channels = [
-        { id: 1, name: 'General' },
-        { id: 2, name: 'Random' },
-        { id: 3, name: 'Vue' },
-        { id: 4, name: 'React' },
-        { id: 5, name: 'Angular'},
-        { id: 6, name: 'Svelte' },
-        { id: 7, name: 'Node' },
-        { id: 8, name: 'Express' },
-        { id: 9, name: 'MongoDB' },
-        { id: 10, name: 'MySQL' },
-        { id: 11, name: 'PostgreSQL' },
-        { id: 12, name: 'Redis' },
-        { id: 13, name: 'GraphQL' },
-        { id: 14, name: 'Apollo' },
-        { id: 15, name: 'Docker' },
-        { id: 16, name: 'Kubernetes' },
-        { id: 17, name: 'AWS' },
-        { id: 18, name: 'GCP' },
-        { id: 19, name: 'Azure' },
-        { id: 20, name: 'Terraform' },
-        { id: 21, name: 'Ansible' },
-        { id: 22, name: 'Puppet' },
-        { id: 23, name: 'Chef' },
-        { id: 24, name: 'Git' },
-        { id: 25, name: 'GitHub' },
-        { id: 26, name: 'GitLab' },
-        { id: 27, name: 'BitBucket' },
-        { id: 28, name: 'Jenkins' },
-        { id: 29, name: 'Travis' },
-        { id: 30, name: 'CircleCI' },
-        { id: 31, name: 'Babel' },
-        { id: 32, name: 'Webpack' },
-        { id: 33, name: 'Rollup' },
-        { id: 34, name: 'Vite' },
-        { id: 35, name: 'NPM' },
-        { id: 36, name: 'Yarn' },
-        { id: 37, name: 'Lerna' },
-        { id: 38, name: 'Bash' },
-        { id: 39, name: 'Zsh' },
-        { id: 40, name: 'Fish' },
-        { id: 41, name: 'C' },
-        { id: 42, name: 'C++' }
-    ]
+  const channels = ref([]);
+  console.log(1,channels.value)
+
+  channels.value = await getChannel(); 
+  console.log(2,channels.value)
 
     const selectConversation = (id) => {
         console.log(id)
@@ -69,6 +16,7 @@
     const deleteConversation = (id) => {
         console.log(id)
     }
+    
 
     // const props = defineProps({
     //     channels: {
@@ -81,6 +29,30 @@
     //     }
     // })
 </script>
+
+<template>
+    <div class="sidebar"> 
+        <div class="sb-channels">
+            <h2>Channels</h2>
+            {{ JSON.stringify(channels) }}
+            <span v-for="channel of channels" :key="channel.id">
+              {{ channel.id }}
+            </span>
+                
+
+                <ul>
+                    <li v-for="channel of channels" :key="channel.id">
+                    <!-- <router-link :to="{ name: 'channel', params: { id: channel.id } }"> -->
+                        {{ channel.name }}
+                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
+                    <!-- </router-link> -->
+                    </li>
+                </ul>
+        </div>      
+    </div>
+</template>
+    
+
     
 <style scoped>
     .sidebar {
