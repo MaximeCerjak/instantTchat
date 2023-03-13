@@ -2,6 +2,7 @@
     <div class="list-chat">
         <!--TODO: affichage des messages précédents-->
     </div>
+    <Channel />
     <div class="chat-box">
         <textarea v-model="message" id="message" cols="100" rows="10" placeholder="Envoyer un message"></textarea>
         <div class="image-preview" v-if="selectedImage">
@@ -17,6 +18,7 @@
     
 <script setup>
     import axios from 'axios';
+    import Channel from '../components/Channel.vue'
     let $refs;
     
     const data = () => ({
@@ -31,7 +33,7 @@
             if (selectedImage) {
                 formData.append('image', selectedImage);
             }
-            const response = await axios.post('/protected/channel/{channel_id/message}', formData);
+            const response = await axios.post('/protected/channel//message', formData);
             console.log('Message envoyé en base de données', response);
             message= '';
             selectedImage= null;
