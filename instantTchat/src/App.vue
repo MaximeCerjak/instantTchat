@@ -5,7 +5,6 @@
                 <img src="./public/assets/logo-coq.png" alt="logo" />
             </p>
             <h1>InstanChat</h1>
-            <Menu />
             <div v-if="authStore.isAuthenticated || isAuthenticated">
                 <button @click="logout" class="logout-btn">LOGOUT</button>
             </div>
@@ -18,9 +17,8 @@
 
 <script setup>
 import useAuthStore from './stores/auth-store';
-import Menu from './components/Layout/Menu.vue';
 import { ref, onMounted } from 'vue';
-import { RouterView, RouterLink } from 'vue-router';
+import { RouterView } from 'vue-router';
 
 const authStore = useAuthStore();
 const isAuthenticated = ref(false);
