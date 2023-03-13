@@ -15,7 +15,6 @@
 </template>
     
 <script setup>
-    import { defineProps } from 'vue'
 
     const channels = [
         { id: 1, name: 'General' },
