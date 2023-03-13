@@ -4,6 +4,7 @@ import useAuthStore from '../stores/auth-store';
 import Chat from '../components/Chat.vue';
 import { ref, onMounted } from 'vue';
 
+
 const authStore = useAuthStore();
 const username = localStorage.getItem('username');
 
