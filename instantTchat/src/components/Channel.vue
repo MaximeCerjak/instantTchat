@@ -21,7 +21,6 @@ import useAuthStore from '../stores/auth-store.js';
 import { ref, reactive } from 'vue';
 import router from '../router'
 
-
 const channelStore = useChannelStore();
 const authStore = useAuthStore();
 

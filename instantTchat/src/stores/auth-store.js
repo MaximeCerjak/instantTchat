@@ -45,11 +45,13 @@ const useAuthStore = defineStore({
             localStorage.removeItem('token');
             localStorage.removeItem('username');
             window.location.reload();
+            
         },
         fetchToken() {
             return this.token;
         }
     },
 })
+
 
 export default useAuthStore

@@ -9,6 +9,9 @@
             <div v-if="authStore.isAuthenticated || isAuthenticated">
                 <button @click="logout" class="logout-btn">LOGOUT</button>
             </div>
+            <div v-if="authStore.isAuthenticated || isAuthenticated">
+                <button @click="logout" class="logout-btn">LOGOUT</button>
+            </div>
         </header>
         <main>
             <RouterView />
@@ -51,6 +54,7 @@ const props = defineProps({
     }
 });
 
+
 </script>
 
 <style>
@@ -71,6 +75,7 @@ main {
 
 .logout-btn {
     background-color: #61606084;
+    background-color: #61606084;
     color: #fff;
     border: none;
     padding: 5px 20px;
@@ -79,9 +84,11 @@ main {
     font-size: 1.2rem;
     height: 40px;
     margin: auto;
+    margin: auto;
 }
 
 .logout-btn:hover {
+    background-color: #49484884;
     background-color: #49484884;
 }
 
