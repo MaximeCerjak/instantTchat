@@ -9,9 +9,6 @@
             <div v-if="authStore.isAuthenticated || isAuthenticated">
                 <button @click="logout" class="logout-btn">LOGOUT</button>
             </div>
-            <div v-if="authStore.isAuthenticated || isAuthenticated">
-                <button @click="logout" class="logout-btn">LOGOUT</button>
-            </div>
         </header>
         <main>
             <RouterView />
