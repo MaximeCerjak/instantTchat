@@ -77,7 +77,7 @@ const useChannelStore = defineStore({
             throw error
           }
         },
-        async addUsersToChannel(token, id, params) {
+        async addUserToChannel(token, id, params) {
           try{
             const response = await api.post(`/protected/channel/${id}/user/${user.id}`, params, {
               headers: {
