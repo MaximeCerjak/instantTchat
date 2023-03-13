@@ -6,9 +6,12 @@
             </p>
             <h1>InstanChat</h1>
             <Menu />
+            <div v-if="authStore.isAuthenticated || isAuthenticated">
+                <button @click="logout" class="logout-btn">LOGOUT</button>
+            </div>
         </header>
         <main>
-            <div v-if="userStore.isAuthenticated">
+            <div v-if="authStore.isAuthenticated || isAuthenticated">
                 <!-- Afficher la vue HomeView si l'utilisateur est connecté -->
                 <HomeView />
             </div>
@@ -18,18 +21,28 @@
             </div>
         </main>
     </div>
-    <div>
-
-    </div>
 </template>
 
 <script setup>
 import HomeView from './views/HomeView.vue';
 import LoginView from './views/LoginView.vue';
-import { useUserStore } from './stores/auth-store';
+import useAuthStore from './stores/auth-store';
 import Menu from './components/Layout/Menu.vue';
+import { ref, onMounted } from 'vue';
 
-const userStore = useUserStore();
+const authStore = useAuthStore();
+const isAuthenticated = ref(false);
+
+onMounted(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        isAuthenticated.value = true;
+    }
+});
+
+const logout = () => {
+    authStore.clearSession();
+};
 
 const props = defineProps({
     user: {
@@ -45,6 +58,7 @@ const props = defineProps({
         required: true
     }
 });
+
 </script>
 
 <style>
@@ -64,7 +78,7 @@ main {
 }
 
 .logout-btn {
-    background-color: #ce040484;
+    background-color: #61606084;
     color: #fff;
     border: none;
     padding: 5px 20px;
@@ -72,11 +86,11 @@ main {
     cursor: pointer;
     font-size: 1.2rem;
     height: 40px;
-    margin: auto 0;
+    margin: auto;
 }
 
 .logout-btn:hover {
-    background-color: rgba(112, 250, 112, 0.707);
+    background-color: #49484884;
 }
 
 .logo-block {
