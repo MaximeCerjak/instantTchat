@@ -14,4 +14,9 @@ const username = localStorage.getItem('username');
     <h1>Salut {{username}}</h1>
     <Channel />
   </div>
+   <div>
+    <div v-for="(message, index) in messages" :key="index">{{ message }}</div>
+    <input type="text" v-model="newMessage" placeholder="Votre message">
+    <button @click="sendMessage">Envoyer</button>
+  </div>
 </template>

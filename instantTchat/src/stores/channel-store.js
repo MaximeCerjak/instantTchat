@@ -96,7 +96,27 @@ const useChannelStore = defineStore({
           catch(error) {
             throw error
           }
-        }
+        },
+        async removeUserFromChannel(token, id, params) {
+          try{
+            const response = await api.delete(`/protected/channel/${id}/user/${user.id}`, params, {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            })
+            this.channels = this.channels.map(channel => {
+              if(channel.id === id) {
+                return response.data
+              } else {
+                return channel
+              }
+            })
+            return response.data
+          }
+          catch(error) {
+            throw error
+          }
+        },
   
 }
 })
