@@ -11,24 +11,16 @@
             </div>
         </header>
         <main>
-            <div v-if="authStore.isAuthenticated || isAuthenticated">
-                <!-- Afficher la vue HomeView si l'utilisateur est connecté -->
-                <HomeView />
-            </div>
-            <div v-else>
-                <!-- Afficher la vue LoginView si l'utilisateur n'est pas connecté -->
-                <LoginView />
-            </div>
+            <RouterView />
         </main>
     </div>
 </template>
 
 <script setup>
-import HomeView from './views/HomeView.vue';
-import LoginView from './views/LoginView.vue';
 import useAuthStore from './stores/auth-store';
 import Menu from './components/Layout/Menu.vue';
 import { ref, onMounted } from 'vue';
+import { RouterView, RouterLink } from 'vue-router';
 
 const authStore = useAuthStore();
 const isAuthenticated = ref(false);

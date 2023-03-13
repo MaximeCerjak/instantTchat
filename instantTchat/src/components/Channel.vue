@@ -19,7 +19,8 @@
 import useChannelStore from '../stores/channel-store.js';
 import useAuthStore from '../stores/auth-store.js';
 import { ref, reactive } from 'vue';
-// import router from '../router'
+import router from '../router'
+
 
 const channelStore = useChannelStore();
 const authStore = useAuthStore();
@@ -44,9 +45,9 @@ const printChannels = async () => {
     console.log(channels, username);
 }
 
-// const createChannel = () => {
-//     router.push({ name: 'add-canal' })
-// }
+const createChannel = () => {
+    router.push({ name: 'add-canal' })
+}
 
 
 const canals = [

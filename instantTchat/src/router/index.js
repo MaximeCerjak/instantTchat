@@ -22,6 +22,20 @@ const router = createRouter({
       component: ChannelFormView,
     }
   ]
+});
+
+router.beforeEach((to, from) => {
+  const token = localStorage.getItem("token")
+  if (
+    // make sure the user is authenticated
+    !token &&
+    // ❗️ Avoid an infinite redirect
+    to.name !== 'login'
+  ) {
+    // redirect the user to the login page
+    return { name: 'login' }
+  }
 })
+
 
 export default router

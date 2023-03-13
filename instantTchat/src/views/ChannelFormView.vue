@@ -1,25 +1,26 @@
 <template>
     <div>
         <!-- a formular to create a instant chat channel -->
-        <form @submit.prevent="createChannel">
+        <form @submit.prevent="createChannel" class="add-canal">
             <label for="name">Name</label>
             <input type="text" id="name" v-model="name" />
             <label for="img">Image</label>
-            <input type="text" id="img" v-model="img" />
+            <input type="file" id="img" />
             <button type="submit">Create</button>
         </form>
+        <Channel />
     </div>
 </template>
 
 <script setup>
 import useChannelStore from '../stores/channel-store.js';
-import useAuthStore from '../stores/auth-store.js';
 import { ref } from 'vue';
+import Channel from '../components/Channel.vue';
 
 const channelStore = useChannelStore();
-const authStore = useAuthStore();
-const token = authStore.token;
-const username = authStore.user.username;
+
+const token = localStorage.getItem('token');
+const username = localStorage.getItem('username');
 
 console.log(username)
 
@@ -52,5 +53,13 @@ const createChannel = async () => {
 </script>
 
 <style scoped>
-
+.add-canal {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    background-color : rgb(124, 121, 121);
+    width : 500px;
+    height: 350px;
+    border-radius: 15px;
+}
 </style>

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import router from '../router/index.js'
 import { login, extendSession } from '../services/connexion/auth'
 
 
@@ -25,6 +26,7 @@ const useAuthStore = defineStore({
             setTimeout(() => {
                 extendSession(this.token)
             }, 1000 * 60 * 60 * 2.85)
+            router.push('/');
         },
         async extendSession() {
             console.log("extend session")
