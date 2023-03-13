@@ -11,24 +11,16 @@
             </div>
         </header>
         <main>
-            <div v-if="authStore.isAuthenticated || isAuthenticated">
-                <!-- Afficher la vue HomeView si l'utilisateur est connecté -->
-                <HomeView />
-            </div>
-            <div v-else>
-                <!-- Afficher la vue LoginView si l'utilisateur n'est pas connecté -->
-                <LoginView />
-            </div>
+            <RouterView />
         </main>
     </div>
 </template>
 
 <script setup>
-import HomeView from './views/HomeView.vue';
-import LoginView from './views/LoginView.vue';
 import useAuthStore from './stores/auth-store';
 import Menu from './components/Layout/Menu.vue';
 import { ref, onMounted } from 'vue';
+import { RouterView, RouterLink } from 'vue-router';
 
 const authStore = useAuthStore();
 const isAuthenticated = ref(false);
@@ -59,6 +51,7 @@ const props = defineProps({
     }
 });
 
+
 </script>
 
 <style>
@@ -79,6 +72,7 @@ main {
 
 .logout-btn {
     background-color: #61606084;
+    background-color: #61606084;
     color: #fff;
     border: none;
     padding: 5px 20px;
@@ -87,9 +81,11 @@ main {
     font-size: 1.2rem;
     height: 40px;
     margin: auto;
+    margin: auto;
 }
 
 .logout-btn:hover {
+    background-color: #49484884;
     background-color: #49484884;
 }
 

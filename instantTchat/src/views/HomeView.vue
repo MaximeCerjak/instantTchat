@@ -1,16 +1,18 @@
 <script setup>
-// import ChannelSidebar from '../components/ChannelSidebar.vue';
 import Channel from '../components/Channel.vue';
 import useAuthStore from '../stores/auth-store';
+import Chat from '../components/Chat.vue';
+import { ref, onMounted } from 'vue';
+
 
 const authStore = useAuthStore();
-const user = authStore.user;
+const username = localStorage.getItem('username');
 
-console.log(authStore);
 </script>
 
 <template>
-  <main>
+  <div>
+    <h1>Salut {{username}}</h1>
     <Channel />
-  </main>
+  </div>
 </template>
