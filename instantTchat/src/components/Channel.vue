@@ -3,7 +3,7 @@
         <div class="sb-channels">
             <h2>Channels</h2>
             <ul>
-                <li v-for="channel in canals" :key="channel.id">
+                <li v-for="channel in channels" :key="channel.id">
                     {{ channel.name }}
                     <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
                 </li>
@@ -18,18 +18,34 @@
 <script setup>
 import useChannelStore from '../stores/channel-store.js';
 import useAuthStore from '../stores/auth-store.js';
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
+import router from '../router'
 
 const channelStore = useChannelStore();
 const authStore = useAuthStore();
 
-const token = authStore.token;
-const channels = ref([]);
+const token = localStorage.getItem('token');
+const username = authStore.username;
+const channels = reactive([]);
+
+
+const initialize = async () => {
+    if(token) {
+        const dbChannels = await channelStore.fetchChannels(token);
+        channels.push(...dbChannels);
+    }
+}
+
+
 
 /*Function print channels in console*/
 const printChannels = async () => {
     const channels = await channelStore.fetchChannels(token);
-    console.log(channels);
+    console.log(channels, username);
+}
+
+const createChannel = () => {
+    router.push({ name: 'add-canal' })
 }
 
 
@@ -67,6 +83,8 @@ const canals = [
         ]
     }
 ]
+
+initialize();
 
 </script>
 
