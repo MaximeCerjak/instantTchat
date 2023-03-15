@@ -141,5 +141,8 @@ button {
     border-radius: 20px;
     background-color: #b0b0b0a4;
     margin-bottom: 5px;
+    color: white;
+    padding: 5px 12px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 </style>

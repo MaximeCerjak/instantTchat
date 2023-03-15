@@ -54,9 +54,30 @@ const createChannel = async () => {
     display: flex;
     flex-direction: column;
     padding: 1em;
-    background-color : rgb(124, 121, 121);
-    width : 500px;
-    height: 350px;
+    background-color : rgb(255, 255, 255);
+    width : 300px;
+    height: 150px;
     border-radius: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+label {
+    margin-bottom: 10px;
+}
+
+input, button {
+    border-style: none;
+    border-radius: 5px;
+    background-color: rgba(70, 90, 126, 0.4);
+    margin-bottom: 20px;
+}
+
+button {
+    background-color:rgb(51, 51, 51);
+    color: white;
+}
+
+button:hover {
+  background-color: #605f5f;
 }
 </style>
