@@ -100,6 +100,7 @@ initialize();
     left: 0;
     height: 100%;
     background-color: #333;
+    width: 20vw;
 }
 
 .sb-channels {

@@ -1,5 +1,6 @@
 <template>
     <div class="list-chat">
+        <h2 v-if="currentChannel">{{ currentChannel.name }}</h2>
         <!--TODO: affichage des messages précédents-->
     </div>
     <Channel />
@@ -19,8 +20,46 @@
 <script setup>
     import axios from 'axios';
     import Channel from '../components/Channel.vue'
+    import useChannelStore from '../stores/channel-store.js';
+    // import useAuthStore from '../stores/auth-store.js';
+    import { reactive, computed, toRaw, watchEffect, ref } from 'vue';
+    import { useRoute } from 'vue-router';
+
+    const route = useRoute();
+    const channelId = ref(parseInt(route.params.id, 10));
+    const channelStore = useChannelStore();
+    const token = localStorage.getItem('token');
+    const channels = reactive([]);
     let $refs;
-    
+
+    // watch(route.params, (newParams) => {
+    //     channelId.value = parseInt(newParams.id, 10);
+    //     console.log(channelId);
+    // });
+
+    watchEffect(() => {
+        channelId.value = parseInt(route.params.id, 10);
+        console.log('channelId:', channelId.value);
+    });
+
+    const initialize = async () => {
+        if(token) {
+            const dbChannels = await channelStore.fetchChannels(token);
+            channels.push(...dbChannels);
+        }
+    }
+
+    initialize();
+
+    const currentChannel = computed( () => {
+        if(channels.length === 0) return null;
+        const channelz = toRaw(channels);
+        console.log(channelz);
+        const canal = channelz.find(channel => channel.id === channelId.value);
+        console.log(canal)
+        return canal;
+    });
+
     const data = () => ({
         message: '',
         selectedImage: null
@@ -60,17 +99,24 @@
 </script>
     
 <style scoped>
+
+    Channel {
+        margin-right: 1em;
+    }
     .list-chat {
         background-color: #59595966;
         border-radius: 10px;
-        width: 850px;
+        width: 65vw;
         height: 500px;
+        margin: 0 auto 0 20vw;
     }
     .chat-box {
+        width: 66.5vw;
         position: absolute;
         bottom: 2px;
         border-radius: 10px;
         display: flex;
+        margin: 0 auto 0 6.5vw;
     }
 
     .button-box {
@@ -88,6 +134,7 @@
         padding: 10px;
         margin-right: 2px;
         height: 70px;
+        width: calc(100% - 100px);
     }
 
     .send-button, .add-img {
