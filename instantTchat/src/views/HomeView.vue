@@ -1,7 +1,6 @@
 <script setup>
 import Channel from '../components/Channel.vue';
 import useAuthStore from '../stores/auth-store';
-import Chat from '../components/Chat.vue';
 import { ref, onMounted } from 'vue';
 
 
@@ -12,7 +11,7 @@ const username = localStorage.getItem('username');
 
 <template>
   <div>
-    <h1>Salut {{username}}</h1>
+    <h1>Bienvenu {{username}}</h1>
     <Channel />
   </div>
 </template>

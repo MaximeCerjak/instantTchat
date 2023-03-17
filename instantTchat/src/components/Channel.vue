@@ -3,7 +3,7 @@
         <div class="sb-channels">
             <h2>Channels</h2>
             <ul>
-                <li v-for="channel in channels" :key="channel.id">
+                <li v-for="channel in channels" :key="channel.id" @click="showCanal(channel.id, token)">
                     {{ channel.name }}
                     <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
                 </li>
@@ -28,6 +28,9 @@ const token = localStorage.getItem('token');
 const username = authStore.username;
 const channels = reactive([]);
 
+const showCanal = (id, token) => {
+    router.push({ name: 'canal', params: { id: id, token: token }});
+}
 
 const initialize = async () => {
     if(token) {
@@ -35,8 +38,6 @@ const initialize = async () => {
         channels.push(...dbChannels);
     }
 }
-
-
 
 /*Function print channels in console*/
 const printChannels = async () => {

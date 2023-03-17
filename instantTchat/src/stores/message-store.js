@@ -1,42 +1,42 @@
-import { api } from '../boot/axios' 
-import { defineStore } from "pinia";
+import { WebSocket } from 'socket.io';
 
-const useMessageStore = defineStore({
-    id: 'message',
-    state: () => ({
-        message: "",
-        selectedChannel: null,
-        token: "..." //token auth utilisateur
-    }),
-    getters: {},
-    actions: {
-        async sendMessage() {
-          try {
-            const messageText = this.message;
-            const channelId = this.selectedChannel.id;
-            const token = this.token;
-      
-            const response = await api.post(`/protected/channel/{channel_id}/message`, {
-              text: messageText
-            }, {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            });
-      
-            console.log('Message envoyé avec succès !');
-            
-            // Réinitialisation de la zone de texte
-            this.message = '';
-      
-            // Ajout du nouveau message à la liste des messages
-            this.selectedChannel.messages.push(response.data);
-          } catch (error) {
-            console.error('Erreur lors de l\'envoi du message :', error);
-            throw error;
-          }
-        }
-      }
-})
-
-export default useMessageStore
+export default {
+  namespaced: true,
+  state: {
+    socket: null, 
+    isConnected: false,
+    messages: [],
+  },
+  mutations: {
+    SOCKET_CONNECT(state, status) {
+      state.isConnected = true;
+    },
+    SOCKET_DISCONNECT(state, status) {
+      state.isConnected = false;
+    },
+    SOCKET_MESSAGE(state, message) {
+      state.messages.push(message);
+    },
+  },
+  actions: {
+    connectToWebSocket({ commit, dispatch, state }, {id, token}) {
+      const socket = new WebSocket(`wss://edu.tardigrade.land/msg/ws/channel/${id}/token/${token}`);
+      socket.on('connect', () => {
+        console.log('Connected to WebSocket');
+        commit('SOCKET_CONNECT');
+      });
+      socket.on('disconnect', () => {
+        console.log('Disconnected from WebSocket');
+        commit('SOCKET_DISCONNECT');
+      });
+      socket.on('message', (message) => {
+        console.log('Received message from WebSocket', message);
+        commit('SOCKET_MESSAGE', message);
+      });
+      state.socket = socket;
+    },
+    sendMessageToWebSocket({ state }, message) {
+      state.socket.emit('message', message);
+    },
+  },
+}
