@@ -1,4 +1,4 @@
-import { WebSocket } from 'socket.io';
+export default useMessageStore
 
 export default {
   namespaced: true,
@@ -39,4 +39,25 @@ export default {
       state.socket.emit('message', message);
     },
   },
+  async fetchMessages(channelId) {
+        try {
+          const token = localStorage.getItem('token');
+
+          const response = await api.get(`/protected/channel/${channelId}/messages/0`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          console.log('Messages récupérés avec succès !');
+
+          // Ajout des messages à la liste des messages
+          return response.data;
+        } catch (error) {
+          console.error('Erreur lors de la récupération des messages :', error);
+          throw error;
+        }
+      }
+    }
 }
+
