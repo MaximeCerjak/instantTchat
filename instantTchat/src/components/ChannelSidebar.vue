@@ -34,18 +34,12 @@
     <div class="sidebar"> 
         <div class="sb-channels">
             <h2>Channels</h2>
-            {{ JSON.stringify(channels) }}
-            <span v-for="channel of channels" :key="channel.id">
-              {{ channel.id }}
-            </span>
-                
-
                 <ul>
                     <li v-for="channel of channels" :key="channel.id">
-                    <!-- <router-link :to="{ name: 'channel', params: { id: channel.id } }"> -->
-                        {{ channel.name }}
-                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
-                    <!-- </router-link> -->
+                        <router-link :to="{ name: 'canal', params: { id: channel.id, token: token } }">
+                            {{ channel.name }}
+                            <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
+                        </router-link>
                     </li>
                 </ul>
         </div>      

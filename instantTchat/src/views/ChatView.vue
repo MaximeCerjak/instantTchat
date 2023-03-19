@@ -1,5 +1,8 @@
 <template>
     <Channel />
+    <div class="goBack">
+        <button @click="goBack()">Retour</button>
+    </div>
     <div class="chat-view">
         <div class="list-chat">
             <h2 v-if="currentChannel">{{ currentChannel.name }}</h2>
@@ -30,7 +33,6 @@
 </template>
     
 <script setup>
-    import axios from 'axios';
     import Channel from '../components/Channel.vue'
     import ChannelParam from '../components/ChannelParam.vue';
     import useChannelStore from '../stores/channel-store.js';
@@ -38,6 +40,7 @@
     // import useAuthStore from '../stores/auth-store.js';
     import { reactive, computed, toRaw, watchEffect, watch, ref } from 'vue';
     import { useRoute } from 'vue-router';
+    import { mapState, mapActions } from 'vuex'
 
     const route = useRoute();
     const channelId = ref(parseInt(route.params.id, 10));
@@ -117,7 +120,25 @@
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
+   
 
+//Ambroise
+    const { messages } = mapState('message-store', ['messages']) // mapping de la propriété messages du state du store
+    const { sendMessageToWebSocket } = mapActions('message-store', ['sendMessageToWebSocket']) // mapping de l'action sendMessageToWebSocket du store
+
+    const messageText = ref('');
+    const selectedImage = ref(null);
+
+    const sendMessage = () => {
+        const message = {
+            text: messageText.value,
+            image: selectedImage.value,
+        };
+        sendMessageToWebSocket(message)
+        messageText.value = '';
+        selectedImage.value = null;
+    };
+    
     const chooseImage = () => {
         // Ouvrir la fenêtre de sélection de fichier
         const imageInput = $refs.imageInput;
@@ -128,10 +149,28 @@
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = () => {
-            selectedImage = reader.result;
+            selectedImage.value = reader.result;
         };
         reader.readAsDataURL(file);
     };
+
+    // récupération du channel_id et du token
+    const route = useRouter();
+    const channel_id = ref('');
+    const token = ref('');
+
+    const goBack = () => {
+        route.go(-1); // Naviguer vers la page précédente
+    };
+
+    const connectToWebSocket = async () => {
+    // Récupération du channel_id et du token
+    await route.isReady()
+    channel_id.value = route.params;
+    token.value = localStorage.getItem('token');
+    }
+
+    connectToWebSocket();
     
 </script>
     
@@ -150,7 +189,28 @@
         height: 500px;
         padding: 10px;
         margin-bottom: 15px;
+=======
+
+    .goBack {
+        position: absolute;
+        top: 10%;
+        right: 10%;
     }
+
+    .goBack button {
+        border-style: none;
+        border-radius: 20px;
+        padding: 5px 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        background-color: #ff7575a4;
+    }
+
+    .goBack button:hover {
+        background-color: #ff7575;
+    }
+
+    
     .chat-box {
         width: auto;
         bottom: 2px;

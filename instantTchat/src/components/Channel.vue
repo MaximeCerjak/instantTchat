@@ -28,6 +28,7 @@ const token = localStorage.getItem('token');
 const username = authStore.username;
 const channels = reactive([]);
 
+
 const showCanal = (id) => {
     router.push(`/canal/${id}`)
 }
@@ -112,5 +113,8 @@ button {
     border-radius: 20px;
     background-color: #b0b0b0a4;
     margin-bottom: 5px;
+    color: white;
+    padding: 5px 12px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 </style>
