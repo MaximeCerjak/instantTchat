@@ -40,7 +40,6 @@ const initialize = async () => {
 }
 
 
-
 /*Function print channels in console*/
 const printChannels = async () => {
     const channels = await channelStore.fetchChannels(token);
@@ -50,42 +49,6 @@ const printChannels = async () => {
 const createChannel = () => {
     router.push({ name: 'add-canal' })
 }
-
-
-const canals = [
-    {
-        "id": 54,
-        "name": "OurChannel",
-        "img": "https://example.com/image.png",
-        "creator": "jsos10",
-        "theme": {
-            "primary_color": "#E91E63",
-            "primary_color_dark": "#C2185B",
-            "accent_color": "#00BCD4",
-            "text_color": "#212121",
-            "accent_text_color": "#FFFFFF"
-        },
-        "users": [
-            "adupont01"
-        ]
-    },
-    {
-        "id": 55,
-        "name": "OurChannel2",
-        "img": "https://example.com/image.png",
-        "creator": "jsos10",
-        "theme": {
-            "primary_color": "#E91E63",
-            "primary_color_dark": "#C2185B",
-            "accent_color": "#00BCD4",
-            "text_color": "#212121",
-            "accent_text_color": "#FFFFFF"
-        },
-        "users": [
-            "adupont01"
-        ]
-    }
-]
 
 initialize();
 
@@ -133,6 +96,10 @@ ul {
 
 li {
     margin-bottom: 5px;
+}
+
+.avatar-block {
+    margin: 0 auto;
 }
 
 router-link {

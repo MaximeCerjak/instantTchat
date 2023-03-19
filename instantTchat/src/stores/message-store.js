@@ -5,18 +5,21 @@ const useMessageStore = defineStore({
     id: 'message',
     state: () => ({
         message: "",
-        selectedChannel: null,
+        selectedChannel: [
+            {
+              messages: [],
+            }
+        ],
         token: "..." //token auth utilisateur
     }),
     getters: {},
     actions: {
-        async sendMessage() {
+        async sendMessage(channelId) {
           try {
             const messageText = this.message;
-            const channelId = this.selectedChannel.id;
-            const token = this.token;
+            const token = localStorage.getItem('token');
       
-            const response = await api.post(`/protected/channel/{channel_id}/message`, {
+            const response = await api.post(`/protected/channel/${channelId}/message`, {
               text: messageText
             }, {
               headers: {
@@ -28,11 +31,30 @@ const useMessageStore = defineStore({
             
             // Réinitialisation de la zone de texte
             this.message = '';
-      
+            console.log(response.data);
             // Ajout du nouveau message à la liste des messages
             this.selectedChannel.messages.push(response.data);
           } catch (error) {
             console.error('Erreur lors de l\'envoi du message :', error);
+            throw error;
+          }
+        },
+        async fetchMessages(channelId) {
+          try {
+            const token = localStorage.getItem('token');
+      
+            const response = await api.get(`/protected/channel/${channelId}/messages/0`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+      
+            console.log('Messages récupérés avec succès !');
+      
+            // Ajout des messages à la liste des messages
+            return response.data;
+          } catch (error) {
+            console.error('Erreur lors de la récupération des messages :', error);
             throw error;
           }
         }
