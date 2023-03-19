@@ -99,6 +99,7 @@
     .goBack button:hover {
         background-color: #ff7575;
     }
+
     .list-chat {
         background-color: #59595966;
         border-radius: 10px;
@@ -106,6 +107,7 @@
         height: auto;
         min-height: 400px;
     }
+    
     .chat-box {
         position: absolute;
         bottom: 2px;

@@ -23,7 +23,7 @@ const router = createRouter({
       component: ChannelFormView,
     },
     {
-      path: '/canal/:id/token/:token',
+      path: '/canal/:id',
       name: 'canal',
       component: ChatView,
     }
