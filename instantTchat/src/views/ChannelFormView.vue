@@ -5,6 +5,7 @@
             <label for="name">Name</label>
             <input type="text" id="name" v-model="name" />
             <button type="submit">Create</button>
+            <button class="close-button" @click="cancel">Cancel</button>
         </form>
         <Channel />
     </div>
@@ -32,6 +33,10 @@ const accent_text_color = ref('');
 const users = ref('');
 
 const createChannel = async () => {
+    if (!name.value.trim()) {
+    alert('Veuillez entrer un nom de canal valide.');
+    return;
+    }
     const channel = {
         name: name.value,
         img: "https://example.com/image.jpg",
@@ -47,6 +52,10 @@ const createChannel = async () => {
     await channelStore.createChannel(token, channel);
     router.push('/');
 }
+
+const cancel = () => {
+    router.push('/');
+}
 </script>
 
 <style scoped>
@@ -54,9 +63,44 @@ const createChannel = async () => {
     display: flex;
     flex-direction: column;
     padding: 1em;
-    background-color : rgb(124, 121, 121);
-    width : 500px;
-    height: 350px;
+    background-color : rgb(255, 255, 255);
+    width : 300px;
+    height: 200px;
     border-radius: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+label {
+    margin-bottom: 10px;
+}
+
+input, button {
+    border-style: none;
+    border-radius: 5px;
+    background-color: rgba(70, 90, 126, 0.4);
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 2px 5px;
+}
+
+button {
+    background-color:rgb(7, 149, 0);
+    color: white;
+}
+
+button:hover {
+  background-color: rgb(5, 99, 0);
+}
+
+.close-button {
+    background-color: rgb(200, 0, 0);
+    color: white;
+}
+
+.close-button:hover {
+    background-color: rgb(119, 0, 0);
 }
 </style>

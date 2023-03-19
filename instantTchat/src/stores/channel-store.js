@@ -26,6 +26,7 @@ const useChannelStore = defineStore({
                     }
                 })
                 this.channels = response.data
+                this.channelId = response.data[0].id
                 return response.data
             } catch (error) {
                 throw error
@@ -117,7 +118,6 @@ const useChannelStore = defineStore({
             throw error
           }
         },
-  
 }
 })
 

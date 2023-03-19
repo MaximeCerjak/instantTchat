@@ -28,6 +28,7 @@ const token = localStorage.getItem('token');
 const username = authStore.username;
 const channels = reactive([]);
 
+
 const showCanal = (id) => {
     router.push(`/canal/${id}`)
 }
@@ -40,7 +41,6 @@ const initialize = async () => {
 }
 
 
-
 /*Function print channels in console*/
 const printChannels = async () => {
     const channels = await channelStore.fetchChannels(token);
@@ -50,42 +50,6 @@ const printChannels = async () => {
 const createChannel = () => {
     router.push({ name: 'add-canal' })
 }
-
-
-const canals = [
-    {
-        "id": 54,
-        "name": "OurChannel",
-        "img": "https://example.com/image.png",
-        "creator": "jsos10",
-        "theme": {
-            "primary_color": "#E91E63",
-            "primary_color_dark": "#C2185B",
-            "accent_color": "#00BCD4",
-            "text_color": "#212121",
-            "accent_text_color": "#FFFFFF"
-        },
-        "users": [
-            "adupont01"
-        ]
-    },
-    {
-        "id": 55,
-        "name": "OurChannel2",
-        "img": "https://example.com/image.png",
-        "creator": "jsos10",
-        "theme": {
-            "primary_color": "#E91E63",
-            "primary_color_dark": "#C2185B",
-            "accent_color": "#00BCD4",
-            "text_color": "#212121",
-            "accent_text_color": "#FFFFFF"
-        },
-        "users": [
-            "adupont01"
-        ]
-    }
-]
 
 initialize();
 
@@ -100,6 +64,7 @@ initialize();
     left: 0;
     height: 100%;
     background-color: #333;
+    width: 20vw;
 }
 
 .sb-channels {
@@ -134,6 +99,10 @@ li {
     margin-bottom: 5px;
 }
 
+.avatar-block {
+    margin: 0 auto;
+}
+
 router-link {
     color: black;
     text-decoration: none;
@@ -144,5 +113,8 @@ button {
     border-radius: 20px;
     background-color: #b0b0b0a4;
     margin-bottom: 5px;
+    color: white;
+    padding: 5px 12px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 </style>
