@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="chat-box">
-            <textarea v-model="message" id="message" placeholder="Envoyer un message"></textarea>
+            <textarea v-model="messageText" id="message" placeholder="Envoyer un message"></textarea>
             <div class="image-preview" v-if="selectedImage">
                 <img :src="selectedImage" />
             </div>
@@ -39,10 +39,11 @@
     import useMessageStore from '../stores/message-store.js';
     // import useAuthStore from '../stores/auth-store.js';
     import { reactive, computed, toRaw, watchEffect, watch, ref } from 'vue';
-    import { useRoute } from 'vue-router';
+    import { useRoute, useRouter } from 'vue-router';
     import { mapState, mapActions } from 'vuex'
 
     const route = useRoute();
+    const router = useRouter();
     const channelId = ref(parseInt(route.params.id, 10));
     const channelStore = useChannelStore();
     const messageStore = useMessageStore();
@@ -51,37 +52,43 @@
     const messages = reactive([]);
     const users = reactive([]);
     const username = ref(localStorage.getItem('username'));
-    let $refs;
+    const imgRef = ref({});
+    // const { messages } = mapState('message-store', ['messages']) // mapping de la propriété messages du state du store
+    const { sendMessageToWebSocket } = mapActions('message-store', ['sendMessageToWebSocket']) // mapping de l'action sendMessageToWebSocket du store
+    const messageText = ref('');
+    const selectedImage = ref(null);
+
 
     watchEffect(() => {
         channelId.value = parseInt(route.params.id, 10);
         console.log('channelId:', channelId.value);
     });
 
-    watchEffect(() => {
-        messages.value = messageStore.fetchMessages(channelId.value);
+    watch(channelId, async () => {
+        await fetchMessages();
     });
+
+    const fetchMessages = async () => {
+        if(channels.length === 0) return null;
+        messages.length = 0;
+        const dbMessages = await messageStore.fetchMessages(route.params.id);
+        console.log(dbMessages);
+        messages.push(...dbMessages);
+    }
 
     const initialize = async () => {
         if(token) {
             const dbChannels = await channelStore.fetchChannels(token);
             channels.push(...dbChannels);
+            await fetchMessages();
         }
     }
-
-    const fetchMessages = async () => {
-        if(channels.length === 0) {
-            const dbMessages = await messageStore.fetchMessages(route.params.id);
-            console.log(dbMessages);
-            messages.push(...dbMessages);
-        }
-    }
-
 
     initialize();
-    fetchMessages();
+    
 
     const currentChannel = computed( () => {
+        users.length = 0;
         if(channels.length === 0) return null;
         const channelz = toRaw(channels);
         const canal = channelz.find(channel => channel.id === channelId.value);
@@ -97,22 +104,6 @@
         selectedImage: null
     });
     
-    const sendMessage = async () => {
-        try {
-            let formData = new FormData();
-            formData.append('message', message);
-            if (selectedImage) {
-                formData.append('image', selectedImage);
-            }
-            const response = await axios.post('/protected/channel//message', formData);
-            console.log('Message envoyé en base de données', response);
-            message= '';
-            selectedImage= null;
-        } catch (error) {
-            console.error('Erreur lors de l\'envoi du message', error);
-        }
-    };
-
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
         const day = date.getDate().toString().padStart(2, '0');
@@ -120,15 +111,9 @@
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
-   
+
 
 //Ambroise
-    const { messages } = mapState('message-store', ['messages']) // mapping de la propriété messages du state du store
-    const { sendMessageToWebSocket } = mapActions('message-store', ['sendMessageToWebSocket']) // mapping de l'action sendMessageToWebSocket du store
-
-    const messageText = ref('');
-    const selectedImage = ref(null);
-
     const sendMessage = () => {
         const message = {
             text: messageText.value,
@@ -141,7 +126,7 @@
     
     const chooseImage = () => {
         // Ouvrir la fenêtre de sélection de fichier
-        const imageInput = $refs.imageInput;
+        const imageInput = $imgRef.imageInput;
         imageInput.click();
     };
     
@@ -155,19 +140,13 @@
     };
 
     // récupération du channel_id et du token
-    const route = useRouter();
-    const channel_id = ref('');
-    const token = ref('');
-
     const goBack = () => {
-        route.go(-1); // Naviguer vers la page précédente
+        router.push('/'); // Naviguer vers la page précédente
     };
 
     const connectToWebSocket = async () => {
-    // Récupération du channel_id et du token
-    await route.isReady()
-    channel_id.value = route.params;
-    token.value = localStorage.getItem('token');
+        // Récupération du channel_id et du token
+        await router.isReady();
     }
 
     connectToWebSocket();
@@ -189,14 +168,13 @@
         height: 500px;
         padding: 10px;
         margin-bottom: 15px;
-=======
+    }
 
     .goBack {
         position: absolute;
-        top: 10%;
-        right: 10%;
+        top: 9.6%;
+        left: 17vw;
     }
-
     .goBack button {
         border-style: none;
         border-radius: 20px;

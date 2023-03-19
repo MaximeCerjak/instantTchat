@@ -13,7 +13,7 @@ export async function login(username, password) {
 /* Call api at /extend_extesion to extend the session */
 export async function extendSession(token) {
     try {
-            const response = await api.post('/extend_session', {
+            const response = await api.post('/protected/extend_session', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

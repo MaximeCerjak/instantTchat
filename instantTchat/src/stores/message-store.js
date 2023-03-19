@@ -1,12 +1,13 @@
-export default useMessageStore
+import { api } from '../boot/axios' 
+import { defineStore } from 'pinia'
 
-export default {
-  namespaced: true,
-  state: {
+const useMessageStore = defineStore({
+  id: "message",
+  state: () => ({
     socket: null, 
     isConnected: false,
     messages: [],
-  },
+  }),
   mutations: {
     SOCKET_CONNECT(state, status) {
       state.isConnected = true;
@@ -38,8 +39,7 @@ export default {
     sendMessageToWebSocket({ state }, message) {
       state.socket.emit('message', message);
     },
-  },
-  async fetchMessages(channelId) {
+    async fetchMessages(channelId) {
         try {
           const token = localStorage.getItem('token');
 
@@ -57,7 +57,9 @@ export default {
           console.error('Erreur lors de la récupération des messages :', error);
           throw error;
         }
-      }
-    }
-}
+    },
+  }
+});
+
+export default useMessageStore;
 
