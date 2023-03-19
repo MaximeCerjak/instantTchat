@@ -1,47 +1,49 @@
 <template>
-    <div class="list-chat">
-        <!--TODO: affichage des messages précédents-->
-    </div>
     <Channel />
-    <div class="chat-box">
-        <textarea v-model="message" id="message" cols="100" rows="10" placeholder="Envoyer un message"></textarea>
-        <div class="image-preview" v-if="selectedImage">
-            <img :src="selectedImage" />
+    <div class="goBack">
+        <button @click="goBack()">Retour</button>
+    </div>
+    <div class="chat-container">
+        <div class="list-chat">
+            <div v-for="message in messages" :key="message.id">{{ message.text }}</div>
         </div>
-        <div class="button-box">
-            <button class="send-button" @click="sendMessage">Envoyer</button>
-            <button class="add-img" @click="chooseImage">Image</button>
-            <input type="file" ref="imageInput" style="display: none" @change="onImageChosen">
+        <div class="chat-box">
+            <textarea v-model="messageText" id="message" cols="100" rows="10" placeholder="Envoyer un message"></textarea>
+            <div class="image-preview" v-if="selectedImage">
+                <img :src="selectedImage" />
+            </div>
+            <div class="button-box">
+                <button class="send-button" @click="sendMessage">Envoyer</button>
+                <button class="add-img" @click="chooseImage">Image</button>
+                <input type="file" ref="imageInput" style="display: none" @change="onImageChosen">
+            </div>
         </div>
     </div>
 </template>
     
 <script setup>
-    import axios from 'axios';
     import Channel from '../components/Channel.vue'
-    let $refs;
-    
-    const data = () => ({
-        message: '',
-        selectedImage: null
-    });
-    
-    const sendMessage = async () => {
-        try {
-            let formData = new FormData();
-            formData.append('message', message);
-            if (selectedImage) {
-                formData.append('image', selectedImage);
-            }
-            const response = await axios.post('/protected/channel//message', formData);
-            console.log('Message envoyé en base de données', response);
-            message= '';
-            selectedImage= null;
-        } catch (error) {
-            console.error('Erreur lors de l\'envoi du message', error);
-        }
-    };
+    import { ref } from 'vue'
+    import { mapState, mapActions } from 'vuex'
+    import { useRouter } from 'vue-router'
 
+
+    const { messages } = mapState('message-store', ['messages']) // mapping de la propriété messages du state du store
+    const { sendMessageToWebSocket } = mapActions('message-store', ['sendMessageToWebSocket']) // mapping de l'action sendMessageToWebSocket du store
+
+    const messageText = ref('');
+    const selectedImage = ref(null);
+
+    const sendMessage = () => {
+        const message = {
+            text: messageText.value,
+            image: selectedImage.value,
+        };
+        sendMessageToWebSocket(message)
+        messageText.value = '';
+        selectedImage.value = null;
+    };
+    
     const chooseImage = () => {
         // Ouvrir la fenêtre de sélection de fichier
         const imageInput = $refs.imageInput;
@@ -52,20 +54,60 @@
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = () => {
-            selectedImage = reader.result;
+            selectedImage.value = reader.result;
         };
         reader.readAsDataURL(file);
     };
+
+    // récupération du channel_id et du token
+    const route = useRouter();
+    const channel_id = ref('');
+    const token = ref('');
+
+    const goBack = () => {
+        route.go(-1); // Naviguer vers la page précédente
+    };
+
+    const connectToWebSocket = async () => {
+    // Récupération du channel_id et du token
+    await route.isReady()
+    channel_id.value = route.params;
+    token.value = localStorage.getItem('token');
+    }
+
+    connectToWebSocket();
     
 </script>
     
 <style scoped>
+
+    .goBack {
+        position: absolute;
+        top: 10%;
+        right: 10%;
+    }
+
+    .goBack button {
+        border-style: none;
+        border-radius: 20px;
+        padding: 5px 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        background-color: #ff7575a4;
+    }
+
+    .goBack button:hover {
+        background-color: #ff7575;
+    }
+
     .list-chat {
         background-color: #59595966;
         border-radius: 10px;
         width: 850px;
-        height: 500px;
+        height: auto;
+        min-height: 400px;
     }
+    
     .chat-box {
         position: absolute;
         bottom: 2px;

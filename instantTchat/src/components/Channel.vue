@@ -28,6 +28,7 @@ const token = localStorage.getItem('token');
 const username = authStore.username;
 const channels = reactive([]);
 
+
 const showCanal = (id) => {
     router.push(`/canal/${id}`)
 }
@@ -38,8 +39,6 @@ const initialize = async () => {
         channels.push(...dbChannels);
     }
 }
-
-
 
 /*Function print channels in console*/
 const printChannels = async () => {
