@@ -2,10 +2,18 @@
     <div class="sidebar"> 
         <div class="sb-channels">
             <h2>Channels</h2>
-            <ul>
-                <li v-for="channel in channels" :key="channel.id" @click="showCanal(channel.id)">
-                    {{ channel.name }}
-                    <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
+            <h3>Mes canaux</h3>
+            <ul class="my-canals">
+                <li v-for="channel in myChannels" :key="channel.id" @click="showCanal(channel.id)">
+                        {{ channel.name }}
+                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
+                </li>
+            </ul>
+            <h3>Les canaux invités</h3>
+            <ul class="other-canals">
+                <li v-for="channel in otherChannels" :key="channel.id" @click="showCanal(channel.id)">
+                        {{ channel.name }}
+                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
                 </li>
             </ul>
             <button @click="printChannels">Print channels</button>
@@ -18,7 +26,7 @@
 <script setup>
 import useChannelStore from '../stores/channel-store.js';
 import useAuthStore from '../stores/auth-store.js';
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import router from '../router'
 
 const channelStore = useChannelStore();
@@ -27,6 +35,16 @@ const authStore = useAuthStore();
 const token = localStorage.getItem('token');
 const username = authStore.username;
 const channels = reactive([]);
+
+const myChannels = computed(() => {
+    const username = localStorage.getItem('username');
+    return channels.filter(channel => channel.creator === username);
+});
+
+const otherChannels = computed(() => {
+    const username = localStorage.getItem('username');
+    return channels.filter(channel => channel.creator !== username);
+});
 
 
 const showCanal = (id) => {
@@ -87,6 +105,15 @@ initialize();
 h2 {
     font-size: 1.2rem;
     margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    margin-top: 30px;
+    background-color: #333;
+    width: 100%;
+    padding: 5px;
 }
 
 ul {

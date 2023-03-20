@@ -22,8 +22,6 @@ const channelStore = useChannelStore();
 const token = localStorage.getItem('token');
 const username = localStorage.getItem('username');
 
-console.log(username)
-
 const name = ref('');
 const primary_color = ref('');
 const primary_color_dark = ref('');
