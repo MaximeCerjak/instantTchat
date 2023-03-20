@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar-channel-param">
         <div class="handleChannel">
-            <h2>{{ channel.name }}</h2>
+            <h2>{{ channelName }}</h2>
             <button @click="showDelete">Supprimer le canal</button>
             <button @click="showInvit">Inviter des membres</button>
         </div>
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import useChannelStore from '../stores/channel-store';
 import { useRouter } from "vue-router";
 import { toast } from 'vue3-toastify';
@@ -86,6 +86,8 @@ const messages = ref(properties.messages);
 const token = ref(properties.token);
 const openDeleteModal = ref(false);
 const openInvitModal = ref(false);
+
+const channelName = computed(() => channel.value.name);
 
 const showDelete = () => {
     openDeleteModal.value = true;

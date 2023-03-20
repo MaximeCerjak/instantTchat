@@ -57,16 +57,26 @@
     const { sendMessageToWebSocket } = mapActions('message-store', ['sendMessageToWebSocket']) // mapping de l'action sendMessageToWebSocket du store
     const messageText = ref('');
     const selectedImage = ref(null);
+    const currentChannel = ref(null);
 
     watchEffect(() => {
         channelId.value = parseInt(route.params.id, 10);
         console.log('channelId:', channelId.value);
     });
 
-    watch(channelId, async () => {
-        await fetchMessages();
+    watchEffect(() => {
+        if (channels.length === 0) return;
+        const channelz = toRaw(channels);
+        const canal = channelz.find(channel => channel.id === channelId.value);
+        currentChannel.value = canal;
+        
+        users.length = 0;
+        const members = canal.users;
+        members.forEach(member => {
+            users.push(member);
+        });
     });
-
+    
     const fetchMessages = async () => {
         if(channels.length === 0) return null;
         messages.length = 0;
@@ -85,17 +95,17 @@
 
     initialize();
 
-    const currentChannel = computed( () => {
-        users.length = 0;
-        if(channels.length === 0) return null;
-        const channelz = toRaw(channels);
-        const canal = channelz.find(channel => channel.id === channelId.value);
-        const members = canal.users;
-        members.forEach(member => {
-            users.push(member);
-        });
-        return canal;
-    });
+    // const currentChannel = computed( () => {
+    //     users.length = 0;
+    //     if(channels.length === 0) return null;
+    //     const channelz = toRaw(channels);
+    //     const canal = channelz.find(channel => channel.id === channelId.value);
+    //     const members = canal.users;
+    //     members.forEach(member => {
+    //         users.push(member);
+    //     });
+    //     return canal;
+    // });
 
     const data = () => ({
         message: '',
