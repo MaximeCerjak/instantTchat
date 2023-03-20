@@ -4,8 +4,8 @@
         <button @click="goBack()">Retour</button>
     </div>
     <div class="chat-view">
+        <h2 class="channel-name" v-if="currentChannel">{{ currentChannel.name }}</h2>
         <div class="list-chat">
-            <h2 v-if="currentChannel">{{ currentChannel.name }}</h2>
             <div v-for="message in messages" :key="message.id" class="message-box">
                 <div v-if="message.image">
                     <img :src="message.image" alt="image" />
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    <ChannelParam v-if="currentChannel" :channel="currentChannel" :users="users" :messages="messages" />
+    <ChannelParam v-if="currentChannel" :channel="currentChannel" :users="users" :messages="messages" :token="token" />
 </template>
     
 <script setup>
@@ -40,7 +40,7 @@
     // import useAuthStore from '../stores/auth-store.js';
     import { reactive, computed, toRaw, watchEffect, watch, ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
-    import { mapState, mapActions } from 'vuex'
+    import { mapState, mapActions } from 'vuex';
 
     const route = useRoute();
     const router = useRouter();
@@ -57,7 +57,6 @@
     const { sendMessageToWebSocket } = mapActions('message-store', ['sendMessageToWebSocket']) // mapping de l'action sendMessageToWebSocket du store
     const messageText = ref('');
     const selectedImage = ref(null);
-
 
     watchEffect(() => {
         channelId.value = parseInt(route.params.id, 10);
@@ -85,7 +84,6 @@
     }
 
     initialize();
-    
 
     const currentChannel = computed( () => {
         users.length = 0;
@@ -111,7 +109,6 @@
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
-
 
 //Ambroise
     const sendMessage = () => {
@@ -154,6 +151,30 @@
 </script>
     
 <style scoped>
+    .channel-name {
+        text-align: center;
+        font-size: 3em;
+        font-weight: 800;
+        margin: 0;
+        margin-bottom: 30px;
+        padding: 0;
+        color: #ff7575a4;
+        text-shadow: 
+        .5px .25px #6d2d2da4,
+        .5px .5px #6d2d2da4,
+        .5px .75px #6d2d2da4,
+        .5px 1px #6d2d2da4,
+        .5px 1.25px #6d2d2da4,
+        .5px 1.5px #6d2d2da4,
+        .5px 1.75px #6d2d2da4,
+        .5px 2px #6d2d2da4,
+        .5px 2.25px #6d2d2da4,
+        .5px 2.5px 1px #6d2d2da4,
+        .5px 9px 3px rgba(0, 0, 0, 0.4),
+        .5px 11px 5px rgba(0, 0, 0, 0.2),
+        .5px 12.5px 17.5px rgba(0, 0, 0, 0.2),
+        .5px 15px 30px rgba(0, 0, 0, 0.4);
+    }
     .chat-view {
         display: flex;
         flex-direction: column;
@@ -165,7 +186,7 @@
         background-color: #59595966;
         border-radius: 10px;
         width: auto;
-        height: 500px;
+        height: 425px;
         padding: 10px;
         margin-bottom: 15px;
     }

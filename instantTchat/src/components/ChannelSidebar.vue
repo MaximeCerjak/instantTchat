@@ -1,47 +1,46 @@
 <script setup>
-    import {getChannel} from '../services/salon/salon'
-    import { ref } from 'vue'
-    const members = []
+import { ref, computed } from 'vue'
 
-  const channels = ref([]);
-  console.log(1,channels.value)
+const channels = ref([]);
+console.log(1,channels.value)
 
-  channels.value = await getChannel(); 
-  console.log(2,channels.value)
+channels.value = await getChannel(); 
+console.log(2,channels.value)
 
-    const selectConversation = (id) => {
-        console.log(id)
-    }
+const myChannels = computed(() => {
+    const username = localStorage.getItem('username');
+    return channels.filter(channel => channel.creator === username);
+});
 
-    const deleteConversation = (id) => {
-        console.log(id)
-    }
-    
+const otherChannels = computed(() => {
+    const username = localStorage.getItem('username');
+    return channels.filter(channel => channel.creator !== username);
+});
 
-    // const props = defineProps({
-    //     channels: {
-    //         type: Array,
-    //         required: true
-    //     },
-    //     members: {
-    //         type: Array,
-    //         required: true
-    //     }
-    // })
 </script>
 
 <template>
     <div class="sidebar"> 
         <div class="sb-channels">
             <h2>Channels</h2>
-                <ul>
-                    <li v-for="channel of channels" :key="channel.id">
-                        <router-link :to="{ name: 'canal', params: { id: channel.id, token: token } }">
-                            {{ channel.name }}
-                            <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
-                        </router-link>
-                    </li>
-                </ul>
+            <h3>Mes canaux</h3>
+            <ul class="my-canals">
+                <li v-for="channel of myChannels" :key="channel.id">
+                    <router-link :to="{ name: 'canal', params: { id: channel.id, token: token } }">
+                        {{ channel.name }}
+                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
+                    </router-link>
+                </li>
+            </ul>
+            <h3>Les canaux invités</h3>
+            <ul class="other-canals">
+                <li v-for="channel of otherChannels" :key="channel.id">
+                    <router-link :to="{ name: 'canal', params: { id: channel.id, token: token } }">
+                        {{ channel.name }}
+                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
+                    </router-link>
+                </li>
+            </ul>
         </div>      
     </div>
 </template>
