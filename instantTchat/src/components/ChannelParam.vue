@@ -245,6 +245,9 @@ const handleClickOutside = (e) => {
 }
 
 .btn-box button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 50px;
     margin: 10px 0;
@@ -262,12 +265,24 @@ const handleClickOutside = (e) => {
     background-color: #ff0000;
 }
 
+.del-btn:hover {
+    background-color: #7e0101;
+}
+
 .cancel-btn {
     background-color: #59595966;
 }
 
+.cancel-btn:hover {
+    background-color: #292929;
+}
+
 .valid-btn {
     background-color: rgba(98, 221, 27, 0.822);
+}
+
+.valid-btn:hover {
+    background-color: rgba(58, 131, 15, 0.6);
 }
 
 .mod-container {

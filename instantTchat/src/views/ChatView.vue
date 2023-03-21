@@ -1,7 +1,7 @@
 <template>
     <Channel />
     <div class="goBack">
-        <button @click="goBack()">Retour</button>
+        <button @click="goBack()">Accueil</button>
     </div>
     <div class="chat-view">
         <h2 class="channel-name" v-if="currentChannel">{{ currentChannel.name }}</h2>
@@ -168,18 +168,18 @@
         margin: 0;
         margin-bottom: 30px;
         padding: 0;
-        color: #ff7575a4;
+        color: var(--main-color);
         text-shadow: 
-        .5px .25px #6d2d2da4,
-        .5px .5px #6d2d2da4,
-        .5px .75px #6d2d2da4,
-        .5px 1px #6d2d2da4,
-        .5px 1.25px #6d2d2da4,
-        .5px 1.5px #6d2d2da4,
-        .5px 1.75px #6d2d2da4,
-        .5px 2px #6d2d2da4,
-        .5px 2.25px #6d2d2da4,
-        .5px 2.5px 1px #6d2d2da4,
+        .5px .25px var(--second-color),
+        .5px .5px var(--second-color),
+        .5px .75px var(--second-color),
+        .5px 1px var(--second-color),
+        .5px 1.25px var(--second-color),
+        .5px 1.5px var(--second-color),
+        .5px 1.75px var(--second-color),
+        .5px 2px var(--second-color),
+        .5px 2.25px var(--second-color),
+        .5px 2.5px 1px var(--second-color),
         .5px 9px 3px rgba(0, 0, 0, 0.4),
         .5px 11px 5px rgba(0, 0, 0, 0.2),
         .5px 12.5px 17.5px rgba(0, 0, 0, 0.2),
