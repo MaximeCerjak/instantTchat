@@ -8,36 +8,30 @@ const useMessageStore = defineStore({
     isConnected: false,
     messages: [],
   }),
-  mutations: {
-    SOCKET_CONNECT(state, status) {
-      state.isConnected = true;
-    },
-    SOCKET_DISCONNECT(state, status) {
-      state.isConnected = false;
-    },
-    SOCKET_MESSAGE(state, message) {
-      state.messages.push(message);
-    },
-  },
   actions: {
-    connectToWebSocket({ commit, dispatch, state }, {id, token}) {
-      const socket = new WebSocket(`wss://edu.tardigrade.land/msg/ws/channel/${id}/token/${token}`);
-      socket.on('connect', () => {
-        console.log('Connected to WebSocket');
-        commit('SOCKET_CONNECT');
-      });
-      socket.on('disconnect', () => {
-        console.log('Disconnected from WebSocket');
-        commit('SOCKET_DISCONNECT');
-      });
-      socket.on('message', (message) => {
-        console.log('Received message from WebSocket', message);
-        commit('SOCKET_MESSAGE', message);
-      });
-      state.socket = socket;
+    connectToWebSocket(id, token) {
+      const ws = new WebSocket(`wss://edu.tardigrade.land/msg/ws/channel/${id}/token/${token}`);
+      ws.onopen = (e) => { "WebSocket is open now."; };
+    if(ws.readyState === 0){
+      this.socket = ws;
+    }
+      console.log(ws);
     },
-    sendMessageToWebSocket({ state }, message) {
-      state.socket.emit('message', message);
+    async sendMessageToWebSocket(message,id) {
+    
+      try {
+        const token = localStorage.getItem('token');
+      const response = await api.post(`/protected/channel/${id}/message`, message, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log(response);
+      } catch (error) {
+        console.error('Erreur lors de l\'envoi du message :', error);
+        throw error;
+      }
+
     },
     async fetchMessages(channelId) {
         try {

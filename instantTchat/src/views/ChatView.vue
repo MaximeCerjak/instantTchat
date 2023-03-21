@@ -40,7 +40,6 @@
     // import useAuthStore from '../stores/auth-store.js';
     import { reactive, computed, toRaw, watchEffect, watch, ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
-    import { mapState, mapActions } from 'vuex';
 
     const route = useRoute();
     const router = useRouter();
@@ -53,8 +52,6 @@
     const users = reactive([]);
     const username = ref(localStorage.getItem('username'));
     const imgRef = ref({});
-    // const { messages } = mapState('message-store', ['messages']) // mapping de la propriété messages du state du store
-    const { sendMessageToWebSocket } = mapActions('message-store', ['sendMessageToWebSocket']) // mapping de l'action sendMessageToWebSocket du store
     const messageText = ref('');
     const selectedImage = ref(null);
     const currentChannel = ref(null);
@@ -123,10 +120,9 @@
 //Ambroise
     const sendMessage = () => {
         const message = {
-            text: messageText.value,
-            image: selectedImage.value,
+            Text: messageText.value,
         };
-        sendMessageToWebSocket(message)
+        messageStore.sendMessageToWebSocket(message,channelId.value);
         messageText.value = '';
         selectedImage.value = null;
     };
