@@ -9,14 +9,14 @@
             <h2>Users</h2>
             <ul>
                 <li v-for="member in members" :key="member.id">
-                    {{ member }}
+                    <button class="ban-btn" @click="showBan(member)">x</button>{{ member }}
                 </li>
             </ul>
         </div>
     </div>
     <div v-if="openDeleteModal" class="delete-mod" @click="handleClickOutside">
         <div ref="modalContent">
-            <p>Êtes-vous sûr de vouloir supprimer ce canal?</p>
+            <p>Êtes-vous sûr de vouloir supprimer ce canal ?</p>
             <div class="btn-box">
                 <button class="del-btn" @click="confirmDelete">Confirmer</button>
                 <button class="cancel-btn" @click="cancelDelete">Annuler</button>
@@ -36,6 +36,15 @@
             </form>
         </div>
     </div>
+    <div v-if="openBanModal" class="delete-mod" @click="handleClickOutside">
+        <div>
+            <p>Êtes-vous sûr de vouloir bannir {{ banMember }} ?</p>
+            <div class="btn-box">
+                <button class="del-btn" @click="confirmBan">Confirmer</button>
+                <button class="cancel-btn" @click="cancelBan">Annuler</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -49,6 +58,7 @@ const channelStore = useChannelStore();
 const router = useRouter();
 const modalContent = ref(null);
 const userAdd = ref('');
+const banMember = ref("")
 
 const notifyError = (string) => {
     toast(string, {
@@ -58,7 +68,7 @@ const notifyError = (string) => {
         transition: "Vue-Toastification__bounce",
         maxToasts: 20,
         theme: "dark",
-    }); 
+    });
 }
 
 const properties = defineProps({
@@ -86,6 +96,7 @@ const messages = ref(properties.messages);
 const token = ref(properties.token);
 const openDeleteModal = ref(false);
 const openInvitModal = ref(false);
+const openBanModal = ref(false);
 
 const channelName = computed(() => channel.value.name);
 
@@ -100,12 +111,34 @@ const cancelDelete = () => {
 const confirmDelete = async () => {
     const deletion = await channelStore.deleteChannel(token.value, channel.value.id, channel.value.creator);
     console.log(deletion)
-    if(!deletion){
+    if (!deletion) {
         notifyError("Vous ne pouvez supprimer que les canaux que vous avez créés !");
     } else {
         openDeleteModal.value = false;
         router.push({ name: 'home' });
     }
+}
+
+const showBan = (id) => {
+    openBanModal.value = true
+    banMember.value = id
+}
+
+const cancelBan = () => {
+    openBanModal.value = false;
+}
+
+const confirmBan = async () => {
+    const params = {
+        user_id: banMember.value,
+        channel_id: channel.value.id
+    }
+    const channelCreator = channel.value.creator;
+    const ban = await channelStore.removeUserFromChannel(token.value, banMember.value, params, channelCreator);
+    if (!ban) {
+        notifyError("Vous ne pouvez bannir des membres que dans vos salons personels !");
+    }
+    openBanModal.value = false;
 }
 
 const showInvit = () => {
@@ -126,9 +159,9 @@ const submitForm = async () => {
     const channelCreator = channel.value.creator;
     const channelId = channel.value.id;
 
-    const invitation = await channelStore.addUserToChannel(token, channelId, channelCreator, params, user );
+    const invitation = await channelStore.addUserToChannel(token, channelId, channelCreator, params, user);
 
-    if(!invitation) {
+    if (!invitation) {
         notifyError("Vous ne pouvez inviter des membres que dans vos salons personels !");
     } else {
         openInvitModal.value = false;
@@ -146,9 +179,8 @@ const handleClickOutside = (e) => {
 </script>
 
 <style scoped>
-
 .sidebar-channel-param {
-    display:flex;
+    display: flex;
     flex-direction: column;
     position: absolute;
     top: 8.7%;
@@ -234,7 +266,7 @@ const handleClickOutside = (e) => {
 .delete-mod p {
     font-size: 1.2rem;
     margin-bottom: 10px;
-    color : rgb(214, 213, 213);
+    color: rgb(214, 213, 213);
 }
 
 .btn-box {
@@ -285,6 +317,12 @@ const handleClickOutside = (e) => {
     background-color: rgba(58, 131, 15, 0.6);
 }
 
+.ban-btn {
+    background-color: #ff0000;
+    color: #FFFFFF;
+    margin-right: 5px;
+}
+
 .mod-container {
     display: flex;
     flex-direction: column;
@@ -305,7 +343,7 @@ const handleClickOutside = (e) => {
     background-color: rgba(0, 0, 0, 0.4);
     padding: 20px;
     border-radius: 10px;
-    color : rgb(214, 213, 213);
+    color: rgb(214, 213, 213);
     width: 90%;
 }
 
@@ -327,5 +365,4 @@ const handleClickOutside = (e) => {
     background-color: rgb(214, 213, 213);
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
 }
-
 </style>
