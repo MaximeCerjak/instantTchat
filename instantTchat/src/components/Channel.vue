@@ -26,11 +26,14 @@
 <script setup>
 import useChannelStore from '../stores/channel-store.js';
 import useAuthStore from '../stores/auth-store.js';
+import useMessageStore from '../stores/message-store';
 import { ref, reactive, computed } from 'vue';
 import router from '../router'
 
+
 const channelStore = useChannelStore();
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 
 const token = localStorage.getItem('token');
 const username = authStore.username;
@@ -48,7 +51,15 @@ const otherChannels = computed(() => {
 
 
 const showCanal = (id) => {
-    router.push(`/canal/${id}`)
+  const channelId = id;
+  const token = localStorage.getItem('token');
+  try {
+     messageStore.connectToWebSocket(channelId, token)
+  } catch (error) {
+    console.log(error)
+  } finally{
+    router.push(`/canal/${channelId}`)
+  }
 }
 
 const initialize = async () => {
