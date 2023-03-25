@@ -40,7 +40,7 @@
         <div>
             <p>Êtes-vous sûr de vouloir bannir {{ banMember }} ?</p>
             <div class="btn-box">
-                <button class="del-btn" @click="confirmBan">Confirmer</button>
+                <button class="del-btn" @click="confirmBan()">Confirmer</button>
                 <button class="cancel-btn" @click="cancelBan">Annuler</button>
             </div>
         </div>
@@ -134,7 +134,9 @@ const confirmBan = async () => {
         channel_id: channel.value.id
     }
     const channelCreator = channel.value.creator;
-    const ban = await channelStore.removeUserFromChannel(token.value, banMember.value, params, channelCreator);
+    const token = localStorage.getItem('token');
+    console.log(token);
+    const ban = await channelStore.removeUserFromChannel(token, banMember.value, channel.value.id, params, channelCreator);
     if (!ban) {
         notifyError("Vous ne pouvez bannir des membres que dans vos salons personels !");
     }

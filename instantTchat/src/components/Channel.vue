@@ -51,15 +51,15 @@ const otherChannels = computed(() => {
 
 
 const showCanal = (id) => {
-  const channelId = id;
-  const token = localStorage.getItem('token');
-  try {
-     messageStore.connectToWebSocket(channelId, token)
-  } catch (error) {
-    console.log(error)
-  } finally{
-    router.push(`/canal/${channelId}`)
-  }
+    const channelId = id;
+    const token = localStorage.getItem('token');
+    try {
+        messageStore.connectToWebSocket(channelId, token)
+    } catch (error) {
+        console.log(error)
+    } finally{
+        router.push(`/canal/${channelId}`)
+    }
 }
 
 const initialize = async () => {

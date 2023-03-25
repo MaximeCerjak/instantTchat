@@ -3,28 +3,28 @@
     <div class="goBack">
         <button @click="goBack()">Accueil</button>
     </div>
-    <div class="chat-view">
+    <div class="chat-view" :style="{ backgroundColor: currentChannel?.theme?.primary_color }">
         <h2 class="channel-name" v-if="currentChannel">{{ currentChannel.name }}</h2>
-        <div class="list-chat">
-            <div v-for="message in messages" :key="message.id" class="message-box">
+        <div class="list-chat" :style="{ color: currentChannel?.theme?.accent_text_color }">
+            <div v-for="message in messages" :key="message.id" class="message-box" :style="{ backgroundColor: currentChannel?.theme?.primary_color_dark }">
                 <div v-if="message.image">
                     <img :src="message.image" alt="image" />
                 </div>
-                <div class="message-info">
+                <div class="message-info" :style="{ color: currentChannel?.theme?.accent_color }">
                     <p>{{ message.author }}</p>
                     <p>{{ formatDate(message.timestamp) }}</p>
                 </div>
                 <p :style="{ 'text-align': message.author === username ? 'end' : 'start' }">{{ message.content.Text }}</p>
             </div>
         </div>
-        <div class="chat-box">
-            <textarea v-model="messageText" id="message" placeholder="Envoyer un message"></textarea>
+        <div class="chat-box" :style="{ color: currentChannel?.theme?.text_color }">
+            <textarea v-model="messageText" id="message" @keydown.enter="sendMessage" placeholder="Envoyer un message"></textarea>
             <div class="image-preview" v-if="selectedImage">
                 <img :src="selectedImage" />
             </div>
             <div class="button-box">
-                <button class="send-button" @click="sendMessage">Envoyer</button>
-                <button class="add-img" @click="chooseImage">Image</button>
+                <button class="send-button" @click="sendMessage" :style="{ backgroundColor: currentChannel?.theme?.primary_color_dark, color: currentChannel?.theme?.accent_text_color }">Envoyer</button>
+                <button class="add-img" @click="chooseImage" :style="{ backgroundColor: currentChannel?.theme?.primary_color_dark, color: currentChannel?.theme?.accent_text_color }">Image</button>
                 <input type="file" ref="imageInput" style="display: none" @change="onImageChosen">
             </div>
         </div>
@@ -56,6 +56,11 @@
     const selectedImage = ref(null);
     const currentChannel = ref(null);
 
+    watch(channelId, async(newValue) => {
+        console.log('channelId:', newValue);
+        await fetchMessages();
+    });
+
     watchEffect(() => {
         channelId.value = parseInt(route.params.id, 10);
         console.log('channelId:', channelId.value);
@@ -75,7 +80,7 @@
     });
     
     const fetchMessages = async () => {
-        if(channels.length === 0) return null;
+        // if(channels.length === 0) return null;
         messages.length = 0;
         const dbMessages = await messageStore.fetchMessages(route.params.id);
         console.log(dbMessages);
@@ -118,13 +123,14 @@
     };
 
 //Ambroise
-    const sendMessage = () => {
+    const sendMessage = async () => {
         const message = {
             Text: messageText.value,
         };
-        messageStore.sendMessageToWebSocket(message,channelId.value);
+        const newSend = await messageStore.sendMessageToWebSocket(message,channelId.value);
         messageText.value = '';
         selectedImage.value = null;
+        fetchMessages();
     };
     
     const chooseImage = () => {
@@ -187,6 +193,7 @@
         width: 60vw;
         margin: 0 auto;
         padding: 1em;
+        border-radius: 20px;
     }
     .list-chat {
         background-color: #59595966;
@@ -195,12 +202,14 @@
         height: 425px;
         padding: 10px;
         margin-bottom: 15px;
+        overflow-y: scroll;
+        scrollbar-width: none;
     }
 
     .goBack {
         position: absolute;
-        top: 9.6%;
-        left: 17vw;
+        top: 16%;
+        left: 22%;
     }
     .goBack button {
         border-style: none;
@@ -208,11 +217,11 @@
         padding: 5px 10px;
         font-family: Arial, Helvetica, sans-serif;
         font-weight: bold;
-        background-color: #ff7575a4;
+        background-color: #ffffff81;
     }
 
     .goBack button:hover {
-        background-color: #ff7575;
+        background-color: #ffffffc0;
     }
 
     

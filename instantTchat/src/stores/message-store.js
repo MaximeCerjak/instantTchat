@@ -21,12 +21,13 @@ const useMessageStore = defineStore({
     
       try {
         const token = localStorage.getItem('token');
-      const response = await api.post(`/protected/channel/${id}/message`, message, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      console.log(response);
+        const response = await api.post(`/protected/channel/${id}/message`, message, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log(response);
+        return response.data;
       } catch (error) {
         console.error('Erreur lors de l\'envoi du message :', error);
         throw error;

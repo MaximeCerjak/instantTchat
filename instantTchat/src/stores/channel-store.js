@@ -106,13 +106,14 @@ const useChannelStore = defineStore({
               }
           }
         },
-        async removeUserFromChannel(token, id, params, channelCreator) {
+        async removeUserFromChannel(token, user_id, channel_id, params, channelCreator) {
+          console.log(token);
           const user = localStorage.getItem('username');
           if (user !== channelCreator) {
             return false;
           } else {
             try{
-              const response = await api.delete(`/protected/channel/${id}/user/${user.id}`, params, {
+              const response = await api.delete(`/protected/channel/${channel_id}/user/${user_id}`, params, {
                 headers: {
                   'Authorization': `Bearer ${token}`
                 }
