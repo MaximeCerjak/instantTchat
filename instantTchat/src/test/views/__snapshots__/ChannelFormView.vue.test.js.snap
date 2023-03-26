@@ -1,0 +1,99 @@
+// Vitest Snapshot v1
+
+exports[`ChannelFormView > should render the component correctly 1`] = `
+"<div data-v-3630cdd9=\\"\\">
+  <!-- a formular to create a instant chat channel -->
+  <form data-v-3630cdd9=\\"\\" class=\\"add-canal\\"><label data-v-3630cdd9=\\"\\" for=\\"name\\">Name</label><input data-v-3630cdd9=\\"\\" type=\\"text\\" id=\\"name\\">
+    <div data-v-3630cdd9=\\"\\" class=\\"themes-choice-box\\">
+      <div data-v-3630cdd9=\\"\\" class=\\"theme-box\\"><label data-v-3630cdd9=\\"\\" for=\\"theme-0\\">Dark devil</label><input data-v-3630cdd9=\\"\\" type=\\"radio\\" id=\\"theme-0\\" value=\\"1\\">
+        <div data-v-3630cdd9=\\"\\" class=\\"colors\\">
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(28, 28, 30);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(255, 94, 94);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(229, 229, 229);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(255, 255, 255);\\"></div>
+          </div>
+        </div>
+      </div>
+      <div data-v-3630cdd9=\\"\\" class=\\"theme-box\\"><label data-v-3630cdd9=\\"\\" for=\\"theme-1\\">Neon Blue</label><input data-v-3630cdd9=\\"\\" type=\\"radio\\" id=\\"theme-1\\" value=\\"2\\">
+        <div data-v-3630cdd9=\\"\\" class=\\"colors\\">
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(38, 38, 38);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(26, 26, 26);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(4, 217, 178);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(242, 242, 242);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(255, 255, 255);\\"></div>
+          </div>
+        </div>
+      </div>
+      <div data-v-3630cdd9=\\"\\" class=\\"theme-box\\"><label data-v-3630cdd9=\\"\\" for=\\"theme-2\\">Sun &amp; beach</label><input data-v-3630cdd9=\\"\\" type=\\"radio\\" id=\\"theme-2\\" value=\\"3\\">
+        <div data-v-3630cdd9=\\"\\" class=\\"colors\\">
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(255, 179, 71);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(229, 128, 29);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(46, 139, 87);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(255, 255, 255);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(240, 255, 240);\\"></div>
+          </div>
+        </div>
+      </div>
+      <div data-v-3630cdd9=\\"\\" class=\\"theme-box\\"><label data-v-3630cdd9=\\"\\" for=\\"theme-3\\">Cartoon sky</label><input data-v-3630cdd9=\\"\\" type=\\"radio\\" id=\\"theme-3\\" value=\\"4\\">
+        <div data-v-3630cdd9=\\"\\" class=\\"colors\\">
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(30, 144, 255);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(16, 78, 139);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(255, 105, 180);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(245, 245, 245);\\"></div>
+          </div>
+          <div data-v-3630cdd9=\\"\\" class=\\"colors-box\\">
+            <div data-v-3630cdd9=\\"\\" class=\\"color-box\\" style=\\"background-color: rgb(255, 255, 255);\\"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-v-3630cdd9=\\"\\" class=\\"custom-theme-box\\"><label data-v-3630cdd9=\\"\\" for=\\"custom-theme\\">Custom Theme</label><input data-v-3630cdd9=\\"\\" type=\\"radio\\" id=\\"custom-theme\\" value=\\"custom\\"></div>
+    <!--Une modale contenant l'interface de customisation du theme-->
+    <!--v-if--><button data-v-3630cdd9=\\"\\" type=\\"submit\\">Create</button><button data-v-3630cdd9=\\"\\" class=\\"close-button\\">Cancel</button>
+  </form>
+  <div data-v-ae58d97d=\\"\\" data-v-3630cdd9=\\"\\" class=\\"sidebar\\">
+    <div data-v-ae58d97d=\\"\\" class=\\"sb-channels\\">
+      <h2 data-v-ae58d97d=\\"\\">Channels</h2>
+      <h3 data-v-ae58d97d=\\"\\">Mes canaux</h3>
+      <ul data-v-ae58d97d=\\"\\" class=\\"my-canals\\"></ul>
+      <h3 data-v-ae58d97d=\\"\\">Les canaux invités</h3>
+      <ul data-v-ae58d97d=\\"\\" class=\\"other-canals\\"></ul><button data-v-ae58d97d=\\"\\">Print channels</button><!-- a button root to create channel formular --><button data-v-ae58d97d=\\"\\">+</button>
+    </div>
+  </div>
+</div>"
+`;

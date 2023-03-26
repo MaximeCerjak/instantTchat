@@ -18,21 +18,23 @@ const useMessageStore = defineStore({
       console.log(ws);
     },
     async sendMessageToWebSocket(message,id) {
-    
-      try {
-        const token = localStorage.getItem('token');
-        const response = await api.post(`/protected/channel/${id}/message`, message, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        console.log(response);
-        return response.data;
-      } catch (error) {
-        console.error('Erreur lors de l\'envoi du message :', error);
-        throw error;
+      if(message.Text !== "" && message.Text !== null && message.Text !== undefined){
+        try {
+          const token = localStorage.getItem('token');
+          const response = await api.post(`/protected/channel/${id}/message`, message, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          console.log(response);
+          return true;
+        } catch (error) {
+          console.error('Erreur lors de l\'envoi du message :', error);
+          throw error;
+        }
+      } else {
+        return false;
       }
-
     },
     async fetchMessages(channelId) {
         try {
@@ -53,6 +55,28 @@ const useMessageStore = defineStore({
           throw error;
         }
     },
+    async updateMessage(updatedMessage) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await api.post(`/protected/channel/${updatedMessage.channel_id}/message/moderate`, updatedMessage, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+    
+        if (response.status === 200) {
+          console.log('Message mis à jour avec succès !');
+          return true;
+        } else {
+          console.error('Erreur lors de la mise à jour du message');
+          return false;
+        }
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour du message :', error);
+        throw error;
+      }
+    }
   }
 });
 

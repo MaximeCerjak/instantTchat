@@ -1,0 +1,13 @@
+// Vitest Snapshot v1
+
+exports[`Channel > should render the component correctly 1`] = `
+"<div data-v-ae58d97d=\\"\\" class=\\"sidebar\\">
+  <div data-v-ae58d97d=\\"\\" class=\\"sb-channels\\">
+    <h2 data-v-ae58d97d=\\"\\">Channels</h2>
+    <h3 data-v-ae58d97d=\\"\\">Mes canaux</h3>
+    <ul data-v-ae58d97d=\\"\\" class=\\"my-canals\\"></ul>
+    <h3 data-v-ae58d97d=\\"\\">Les canaux invités</h3>
+    <ul data-v-ae58d97d=\\"\\" class=\\"other-canals\\"></ul><button data-v-ae58d97d=\\"\\">Print channels</button><!-- a button root to create channel formular --><button data-v-ae58d97d=\\"\\">+</button>
+  </div>
+</div>"
+`;
