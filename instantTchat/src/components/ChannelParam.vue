@@ -127,18 +127,15 @@ const cancelBan = () => {
 }
 
 const confirmBan = async () => {
-    const params = {
-        user_id: banMember.value,
-        channel_id: channel.value.id
-    }
-    const channelCreator = channel.creator;
+    const channelCreator = channel.value.creator;
     const token = localStorage.getItem('token');
     console.log(token);
-    const ban = await channelStore.removeUserFromChannel(token, banMember.value, channel.value.id, params, channelCreator);
+    const ban = await channelStore.removeUserFromChannel(token, banMember.value, channel.value.id, channelCreator);
     if (!ban) {
         notifyError("Vous ne pouvez bannir des membres que dans vos salons personels !");
     }
     openBanModal.value = false;
+    members.value = members.value.filter(member => member !== banMember.value);
 }
 
 const showInvit = () => {
