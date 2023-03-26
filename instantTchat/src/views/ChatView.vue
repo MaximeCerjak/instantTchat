@@ -11,8 +11,34 @@
                     <img :src="message.image" alt="image" />
                 </div>
                 <div class="message-info" :style="{ color: currentChannel?.theme?.accent_color }">
-                    <p>{{ message.author }}</p>
-                    <p>{{ formatDate(message.timestamp) }}</p>
+                    <div class="info-message">
+                        <p>{{ message.author }}</p>
+                        <p class="date-info">{{ formatDate(message.timestamp) }}</p>
+                    </div>
+                    <span>
+                        <i class="material-icons" v-if="username === currentChannel.creator" @click="openModeratorModal(message)">more_vert</i>
+                    </span>
+                    <div class="moderator-modal" v-if="showModeratorModal">
+                        <div class="moderator-modal-content">
+                            <div class="moderator-modal-header">
+                                <h2>Modération</h2>
+                            </div>
+                            <div class="moderator-modal-body">
+                                <div class="moderator-box">
+                                    <div class="header-moderator">
+                                        <h3>Modifier le message</h3>
+                                    </div>
+                                    <form class="mod-form" @submit.prevent="submitMod">
+                                        <textarea v-model="modMessage" :placeholder="modMessage"></textarea>
+                                        <button type="submit">Modifier</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="moderator-modal-footer">
+                                <button class="close-button" @click="showModeratorModal = !showModeratorModal">Close</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <p :style="{ 'text-align': message.author === username ? 'end' : 'start' }">{{ message.content.Text }}</p>
             </div>
@@ -40,6 +66,19 @@
     // import useAuthStore from '../stores/auth-store.js';
     import { reactive, computed, toRaw, watchEffect, watch, ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
+    import { toast } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
+
+    const notifyError = (string) => {
+    toast(string, {
+        autoClose: 3000,
+        position: "top-right",
+        type: "error",
+        transition: "Vue-Toastification__bounce",
+        maxToasts: 20,
+        theme: "dark",
+    });
+}
 
     const route = useRoute();
     const router = useRouter();
@@ -55,6 +94,9 @@
     const messageText = ref('');
     const selectedImage = ref(null);
     const currentChannel = ref(null);
+    const showModeratorModal = ref(false);
+    const modMessage = ref('');
+    const selectedMessage = ref(null);
 
     watch(channelId, async(newValue) => {
         console.log('channelId:', newValue);
@@ -98,40 +140,31 @@
 
     initialize();
 
-    // const currentChannel = computed( () => {
-    //     users.length = 0;
-    //     if(channels.length === 0) return null;
-    //     const channelz = toRaw(channels);
-    //     const canal = channelz.find(channel => channel.id === channelId.value);
-    //     const members = canal.users;
-    //     members.forEach(member => {
-    //         users.push(member);
-    //     });
-    //     return canal;
-    // });
-
-    const data = () => ({
-        message: '',
-        selectedImage: null
-    });
-    
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const seconds = date.getSeconds().toString().padStart(2, '0');
+        return `${day}/${month}/${year} - ${hours}:${minutes}:${seconds}`;
     };
 
-//Ambroise
+
     const sendMessage = async () => {
         const message = {
             Text: messageText.value,
         };
         const newSend = await messageStore.sendMessageToWebSocket(message,channelId.value);
-        messageText.value = '';
-        selectedImage.value = null;
-        fetchMessages();
+        if(!newSend) {
+            notifyError('Votre message ne peut être vide');
+            return;
+        } else {
+            messageText.value = '';
+            selectedImage.value = null;
+            fetchMessages();
+        }
     };
     
     const chooseImage = () => {
@@ -157,7 +190,35 @@
     const connectToWebSocket = async () => {
         // Récupération du channel_id et du token
         await router.isReady();
-    }
+    };
+
+    const openModeratorModal = (message) => {
+        selectedMessage.value = message;
+        modMessage.value = message.content.Text;
+        showModeratorModal.value = true;
+    };
+
+    const submitMod = async () => {
+        const updatedMessage = {
+            channel_id: channelId.value,
+            timestamp: selectedMessage.value.timestamp,
+            author: selectedMessage.value.author,
+            content: {
+                Text: modMessage.value,
+            }
+        };
+
+        const updateSuccess = await messageStore.updateMessage(updatedMessage);
+
+        if (updateSuccess) {
+            showModeratorModal.value = false;
+            modMessage.value = '';
+            selectedMessage.value = null;
+            await fetchMessages();
+        } else {
+            notifyError('Erreur lors de la mise à jour du message');
+        }
+    };
 
     connectToWebSocket();
     
@@ -207,6 +268,33 @@
         scrollbar-width: none;
     }
 
+    .list-chat::-webkit-scrollbar {
+        display: none;
+    }
+
+    .list-chat .message {
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+        background-color: #59595966;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .info-message {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .date-info {
+        margin-left: 10px;;
+    }
+
+    .material-icons {
+        font-size: 1.5em;
+        color: white;
+    }
     .goBack {
         position: absolute;
         top: 16%;
@@ -278,5 +366,17 @@
 
     .send-button:hover , .add-img:hover {
         background-color: #89898966;
+    }
+
+    .moderator-modal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>
