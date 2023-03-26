@@ -4,7 +4,7 @@
         <form @submit.prevent="createChannel" class="add-canal">
             <label for="name">Name</label>
             <input type="text" id="name" v-model="name" />
-            <div class="theme-choice-box">
+            <div class="themes-choice-box">
                 <div v-for="(theme, index) in themes" :key="theme.id" class="theme-box">
                     <label :for="`theme-${index}`">{{ theme.themeName }}</label>
                     <input type="radio" :id="`theme-${index}`" :value="theme.id" v-model="selectedThemes" />
@@ -22,7 +22,7 @@
             </div>
 
             <!--Une modale contenant l'interface de customisation du theme-->
-            <div v-if="showCustomModal" class="custom-theme-modal">
+            <div v-if="showCustomModal" class="custom-theme-modal" id="custom-theme-modal">
                 <div class="custom-theme-modal-content">
                     <div class="custom-theme-modal-header">
                         <h2>Custom Theme</h2>
@@ -102,43 +102,6 @@ const customColors = reactive({
     text_color: '#ECEFF4',
     accent_text_color: '#D08770',
 });
-
-// const createChannel = async () => {
-//     const selectedTheme = themes.find(t => t.id === selectedThemes.value);
-    
-
-//     if (!name.value.trim()) {
-//     alert('Veuillez entrer un nom de canal valide.');
-//     return;
-//     }
-
-//     if(selectedThemes.value.length === 0) {
-//         //On envoie const channel sans theme
-//         const channel = {
-//             name: name.value,
-//             img: "https://example.com/image.jpg",
-//             users: users.value
-//         }
-//         await channelStore.createChannel(token, channel);
-//         router.push('/');
-//         return;
-//     }
-
-//     const channel = {
-//         name: name.value,
-//         img: "https://example.com/image.jpg",
-//         theme: {
-//             primary_color: selectedTheme.colors[0],
-//             primary_color_dark: selectedTheme.colors[1],
-//             accent_color: selectedTheme.colors[2],
-//             text_color: selectedTheme.colors[3],
-//             accent_text_color: selectedTheme.colors[4]
-//         },
-//         users: users.value
-//     }
-//     await channelStore.createChannel(token, channel);
-//     router.push('/');
-// }
 
 const createChannel = async () => {
     let themeToUse;

@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar-channel-param">
         <div class="handleChannel">
-            <h2>{{ channelName }}</h2>
+            <h2>{{ channelName.creator }}</h2>
             <button @click="showDelete">Supprimer le canal</button>
             <button @click="showInvit">Inviter des membres</button>
         </div>
@@ -90,15 +90,17 @@ const properties = defineProps({
     }
 });
 
-const channel = ref(properties.channel);
-const members = ref(properties.users);
-const messages = ref(properties.messages);
-const token = ref(properties.token);
+const channel = properties.channel;
+const members = properties.users;
+const messages = properties.messages;
+const token = properties.token;
 const openDeleteModal = ref(false);
 const openInvitModal = ref(false);
 const openBanModal = ref(false);
 
-const channelName = computed(() => channel.value.name);
+const channelName = computed(() => channel);
+console.log("channelName"+channelName);
+
 
 const showDelete = () => {
     openDeleteModal.value = true;
@@ -109,7 +111,7 @@ const cancelDelete = () => {
 }
 
 const confirmDelete = async () => {
-    const deletion = await channelStore.deleteChannel(token.value, channel.value.id, channel.value.creator);
+    const deletion = await channelStore.deleteChannel(token, channel.id, channel.creator);
     console.log(deletion)
     if (!deletion) {
         notifyError("Vous ne pouvez supprimer que les canaux que vous avez créés !");
@@ -131,12 +133,12 @@ const cancelBan = () => {
 const confirmBan = async () => {
     const params = {
         user_id: banMember.value,
-        channel_id: channel.value.id
+        channel_id: channel.id
     }
-    const channelCreator = channel.value.creator;
+    const channelCreator = channel.creator;
     const token = localStorage.getItem('token');
     console.log(token);
-    const ban = await channelStore.removeUserFromChannel(token, banMember.value, channel.value.id, params, channelCreator);
+    const ban = await channelStore.removeUserFromChannel(token, banMember.value, channel.id, params, channelCreator);
     if (!ban) {
         notifyError("Vous ne pouvez bannir des membres que dans vos salons personels !");
     }
@@ -154,12 +156,12 @@ const cancelInvit = () => {
 const submitForm = async () => {
     const params = {
         username: userAdd.value,
-        channel_id: channel.value.id
+        channel_id: channel.id
     }
     const user = params.username;
     const token = localStorage.getItem('token');
-    const channelCreator = channel.value.creator;
-    const channelId = channel.value.id;
+    const channelCreator = channel.creator;
+    const channelId = channel.id;
 
     const invitation = await channelStore.addUserToChannel(token, channelId, channelCreator, params, user);
 
