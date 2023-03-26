@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    <ChannelParam v-if="currentChannel" :channel="currentChannel" :users="users" :messages="messages" :token="token" />
+    <ChannelParam v-if="currentChannel" :users="users" :token="token" />
 </template>
     
 <script setup>
@@ -71,6 +71,7 @@
         const channelz = toRaw(channels);
         const canal = channelz.find(channel => channel.id === channelId.value);
         currentChannel.value = canal;
+        channelStore.currentChannel = canal;
         
         users.length = 0;
         const members = canal.users;

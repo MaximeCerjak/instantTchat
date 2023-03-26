@@ -1,6 +1,5 @@
 import { api } from '../boot/axios' 
 import { defineStore } from 'pinia'
-import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css';
 
 const useChannelStore = defineStore({
@@ -11,14 +10,6 @@ const useChannelStore = defineStore({
         users: [],
         theme: {}
     }),
-    getters: {
-        getChannelById: (state) => (id) => {
-            return state.channels.find(channel => channel.id === id)
-        },
-        getAllChannels: (state) => {
-            return state.channels
-        },
-    },
     actions: {
         async fetchChannels(token) {
             try {
@@ -88,6 +79,7 @@ const useChannelStore = defineStore({
           }
         },
         async addUserToChannel(token, id, channelCreator, params, user) {
+          console.log("add user to channel" + id + " " + channelCreator + " " + JSON.stringify(params, null, 2) + " " + user + " " + token);
           const userCreator = localStorage.getItem('username');
           console.log(channelCreator, userCreator)
           if (userCreator !== channelCreator) {

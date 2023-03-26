@@ -1,7 +1,8 @@
 <template>
     <div class="sidebar-channel-param">
         <div class="handleChannel">
-            <h2>{{ channelName.creator }}</h2>
+            <h2 :style="{ color: channel?.theme?.accent_text_color }">{{ channel.creator }}</h2>
+            <h3 :style="{ color: channel?.theme?.accent_color }">{{channel.name}}</h3>
             <button @click="showDelete">Supprimer le canal</button>
             <button @click="showInvit">Inviter des membres</button>
         </div>
@@ -48,17 +49,19 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import useChannelStore from '../stores/channel-store';
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
 const channelStore = useChannelStore();
+const currentChannel = computed(() => channelStore.currentChannel);
 const router = useRouter();
 const modalContent = ref(null);
 const userAdd = ref('');
-const banMember = ref("")
+const banMember = ref("");
+const route = useRoute();
 
 const notifyError = (string) => {
     toast(string, {
@@ -72,15 +75,7 @@ const notifyError = (string) => {
 }
 
 const properties = defineProps({
-    channel: {
-        type: Object,
-        required: true
-    },
     users: {
-        type: Array,
-        required: true
-    },
-    messages: {
         type: Array,
         required: true
     },
@@ -90,17 +85,18 @@ const properties = defineProps({
     }
 });
 
-const channel = properties.channel;
-const members = properties.users;
-const messages = properties.messages;
+const channel = ref(currentChannel.value);
+const members = ref(channel.value.users);
 const token = properties.token;
 const openDeleteModal = ref(false);
 const openInvitModal = ref(false);
 const openBanModal = ref(false);
 
-const channelName = computed(() => channel);
-console.log("channelName"+channelName);
-
+watch(currentChannel, (newChannel) => {
+    console.log("newChannel", JSON.stringify(newChannel, null, 2));
+    channel.value = newChannel;
+    members.value = newChannel.users;
+});
 
 const showDelete = () => {
     openDeleteModal.value = true;
@@ -111,7 +107,7 @@ const cancelDelete = () => {
 }
 
 const confirmDelete = async () => {
-    const deletion = await channelStore.deleteChannel(token, channel.id, channel.creator);
+    const deletion = await channelStore.deleteChannel(token, channel.value.id, channel.creator);
     console.log(deletion)
     if (!deletion) {
         notifyError("Vous ne pouvez supprimer que les canaux que vous avez créés !");
@@ -133,12 +129,12 @@ const cancelBan = () => {
 const confirmBan = async () => {
     const params = {
         user_id: banMember.value,
-        channel_id: channel.id
+        channel_id: channel.value.id
     }
     const channelCreator = channel.creator;
     const token = localStorage.getItem('token');
     console.log(token);
-    const ban = await channelStore.removeUserFromChannel(token, banMember.value, channel.id, params, channelCreator);
+    const ban = await channelStore.removeUserFromChannel(token, banMember.value, channel.value.id, params, channelCreator);
     if (!ban) {
         notifyError("Vous ne pouvez bannir des membres que dans vos salons personels !");
     }
@@ -156,12 +152,12 @@ const cancelInvit = () => {
 const submitForm = async () => {
     const params = {
         username: userAdd.value,
-        channel_id: channel.id
+        channel_id: channel.value.id
     }
     const user = params.username;
     const token = localStorage.getItem('token');
-    const channelCreator = channel.creator;
-    const channelId = channel.id;
+    const channelCreator = channel.value.creator;
+    const channelId = channel.value.id;
 
     const invitation = await channelStore.addUserToChannel(token, channelId, channelCreator, params, user);
 
@@ -169,7 +165,8 @@ const submitForm = async () => {
         notifyError("Vous ne pouvez inviter des membres que dans vos salons personels !");
     } else {
         openInvitModal.value = false;
-        router.push({ name: 'home' });
+        members.value.push(user);
+        userAdd.value = '';
     }
 }
 
