@@ -56,7 +56,7 @@
             </div>
         </div>
     </div>
-    <ChannelParam v-if="currentChannel" :users="users" :token="token" @update:channel="refreshCurrentChannel"/>
+    <ChannelParam v-if="currentChannel" :users="users" :token="token" />
 </template>
     
 <script setup>
@@ -119,6 +119,7 @@ watch(channelId, async (newValue) => {
     console.log('channelId:', newValue);
     await fetchMessages();
 });
+
 
 watchEffect(() => {
     channelId.value = parseInt(route.params.id, 10);
