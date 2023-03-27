@@ -201,6 +201,8 @@ const submitUpdateForm = async () => {
       openUpdateModal.value = false;
         members.value.push(user);
         userAdd.value = '';
+        currentChannel.value.name = params.name;
+        currentChannel.value.img = params.img;
     }else{
       notifyError("Vous ne pouvez pas modifier les canaux que vous n'avez pas créés !");
     }
