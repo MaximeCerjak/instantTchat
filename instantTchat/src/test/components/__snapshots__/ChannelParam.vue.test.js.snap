@@ -1,0 +1,16 @@
+// Vitest Snapshot v1
+
+exports[`ChannelParam > should render the component correctly 1`] = `
+"<div data-v-e856487c=\\"\\" class=\\"sidebar-channel-param\\">
+  <div data-v-e856487c=\\"\\" class=\\"handleChannel\\">
+    <h2 data-v-e856487c=\\"\\">user1</h2><button data-v-e856487c=\\"\\">Supprimer le canal</button><button data-v-e856487c=\\"\\">Inviter des membres</button>
+  </div>
+  <div data-v-e856487c=\\"\\" class=\\"users-list\\">
+    <h2 data-v-e856487c=\\"\\">Users</h2>
+    <ul data-v-e856487c=\\"\\"></ul>
+  </div>
+</div>
+<!--v-if-->
+<!--v-if-->
+<!--v-if-->"
+`;

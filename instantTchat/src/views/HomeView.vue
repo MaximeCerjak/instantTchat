@@ -11,7 +11,7 @@ const username = localStorage.getItem('username');
 
 <template>
   <div>
-    <h1>Bienvenu {{username}}</h1>
+    <h1>Bienvenue {{ username }}</h1>
     <Channel />
   </div>
 </template>

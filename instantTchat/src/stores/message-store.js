@@ -8,36 +8,33 @@ const useMessageStore = defineStore({
     isConnected: false,
     messages: [],
   }),
-  mutations: {
-    SOCKET_CONNECT(state, status) {
-      state.isConnected = true;
-    },
-    SOCKET_DISCONNECT(state, status) {
-      state.isConnected = false;
-    },
-    SOCKET_MESSAGE(state, message) {
-      state.messages.push(message);
-    },
-  },
   actions: {
-    connectToWebSocket({ commit, dispatch, state }, {id, token}) {
-      const socket = new WebSocket(`wss://edu.tardigrade.land/msg/ws/channel/${id}/token/${token}`);
-      socket.on('connect', () => {
-        console.log('Connected to WebSocket');
-        commit('SOCKET_CONNECT');
-      });
-      socket.on('disconnect', () => {
-        console.log('Disconnected from WebSocket');
-        commit('SOCKET_DISCONNECT');
-      });
-      socket.on('message', (message) => {
-        console.log('Received message from WebSocket', message);
-        commit('SOCKET_MESSAGE', message);
-      });
-      state.socket = socket;
+    connectToWebSocket(id, token) {
+      const ws = new WebSocket(`wss://edu.tardigrade.land/msg/ws/channel/${id}/token/${token}`);
+      ws.onopen = (e) => { "WebSocket is open now."; };
+    if(ws.readyState === 0){
+      this.socket = ws;
+    }
+      console.log(ws);
     },
-    sendMessageToWebSocket({ state }, message) {
-      state.socket.emit('message', message);
+    async sendMessageToWebSocket(message,id) {
+      if(message.Text !== "" && message.Text !== null && message.Text !== undefined){
+        try {
+          const token = localStorage.getItem('token');
+          const response = await api.post(`/protected/channel/${id}/message`, message, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          console.log(response);
+          return true;
+        } catch (error) {
+          console.error('Erreur lors de l\'envoi du message :', error);
+          throw error;
+        }
+      } else {
+        return false;
+      }
     },
     async fetchMessages(channelId) {
         try {
@@ -58,6 +55,28 @@ const useMessageStore = defineStore({
           throw error;
         }
     },
+    async updateMessage(updatedMessage) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await api.post(`/protected/channel/${updatedMessage.channel_id}/message/moderate`, updatedMessage, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+    
+        if (response.status === 200) {
+          console.log('Message mis à jour avec succès !');
+          return true;
+        } else {
+          console.error('Erreur lors de la mise à jour du message');
+          return false;
+        }
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour du message :', error);
+        throw error;
+      }
+    }
   }
 });
 
