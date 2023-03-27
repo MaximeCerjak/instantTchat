@@ -50,19 +50,13 @@
         <div class="chat-box" :style="{ color: currentChannel?.theme?.text_color }">
             <textarea v-model="messageText" id="message" @keydown.enter="sendMessage"
                 placeholder="Envoyer un message"></textarea>
-            <div class="image-preview" v-if="selectedImage">
-                <img :src="selectedImage" />
-            </div>
             <div class="button-box">
                 <button class="send-button" @click="sendMessage()"
                     :style="{ backgroundColor: currentChannel?.theme?.primary_color_dark, color: currentChannel?.theme?.accent_text_color }">Envoyer</button>
-                <button class="add-img" @click="chooseImage"
-                    :style="{ backgroundColor: currentChannel?.theme?.primary_color_dark, color: currentChannel?.theme?.accent_text_color }">Image</button>
-                <input type="file" ref="imageInput" style="display: none" @change="onImageChosen">
             </div>
         </div>
     </div>
-    <ChannelParam v-if="currentChannel" :users="users" :token="token" />
+    <ChannelParam v-if="currentChannel" :users="users" :token="token" @update:channel="refreshCurrentChannel"/>
 </template>
     
 <script setup>
@@ -112,7 +106,6 @@ const channels = reactive([]);
 const messages = reactive([]);
 const users = reactive([]);
 const username = ref(localStorage.getItem('username'));
-const imgRef = ref({});
 const messageText = ref('');
 const selectedImage = ref(null);
 const currentChannel = ref(null);
@@ -173,6 +166,21 @@ const initialize = async () => {
     }
 }
 
+const refreshCurrentChannel = async () => {
+    const dbChannels = await channelStore.fetchChannels(token);
+    channels.length = 0;
+    channels.push(...dbChannels);
+    const channelz = toRaw(channels);
+    const canal = channelz.find(channel => channel.id === channelId.value);
+    currentChannel.value = canal;
+    channelStore.currentChannel = canal;
+    users.length = 0;
+    const members = canal.users;
+    members.forEach(member => {
+        users.push(member);
+    });
+}
+
 initialize();
 
 const formatDate = (timestamp) => {
@@ -207,28 +215,11 @@ const scrollToLastMessage = async () => {
     listMessage.value.scrollTop = listMessage.value.scrollHeight;
 };
 
-const chooseImage = () => {
-    // Ouvrir la fenêtre de sélection de fichier
-    const imageInput = $imgRef.imageInput;
-    imageInput.click();
-};
-
-const onImageChosen = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-        selectedImage.value = reader.result;
-    };
-    reader.readAsDataURL(file);
-};
-
-// récupération du channel_id et du token
 const goBack = () => {
-    router.push('/'); // Naviguer vers la page précédente
+    router.push('/'); 
 };
 
 const connectToWebSocket = async () => {
-    // Récupération du channel_id et du token
     await router.isReady();
 };
 

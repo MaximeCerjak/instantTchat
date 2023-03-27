@@ -20,13 +20,38 @@
         <div ref="modalContent" class="mod-container">
             <h2>Modifier le canal</h2>
             <form @submit.prevent="submitUpdateForm" class="addUserForm">
+
                 <label for="channelName">Nom du channel</label>
-                
-                <input type="text" :value="currentChannel.name" readonly>
-                <input type="text" id="channelName" v-model="updateName">
+                <input type="text" id="channelName" :value="currentChannel.name">
+
                 <label for="channelImg">Image du channel</label>
-                <input type="text" :value="currentChannel.img" readonly>
-                <input type="text" id="channelImg" v-model="updateImg">
+                <input type="text" id="channelImg" :value="currentChannel.img">
+
+                <div class="custom-theme-box">
+                    <label for="custom-theme">Custom Theme</label>
+                    <input type="checkbox" id="custom-theme" value="custom" v-model="selectedThemes" @click="showCustomModal = !showCustomModal"/>
+                </div>
+    
+                <!--Une modale contenant l'interface de customisation du theme-->
+                <div v-if="showCustomModal" class="custom-theme-modal" id="custom-theme-modal">
+                    <div class="custom-theme-modal-content">
+                        <div class="custom-theme-modal-header">
+                            <h2>Custom Theme</h2>
+                        </div>
+                        <div class="custom-theme-options">
+                            <div class="color-option" v-for="(colorLabel, index) in customColorLabels" :key="index">
+                                <div class="color-preview" :style="{ backgroundColor: customColors[index] }"></div>
+                                <div class="color-label">{{ colorLabel }}</div>
+                                <input type="color" class="color-input" v-model="customColors[index]" />
+                            </div>
+                        </div>
+                        <div class="custom-theme-modal-footer">
+                            <button class="confirm-btn" @click.stop="confirmUpdateTheme">Valider</button>
+                            <button class="close-button" @click.stop="cancelUpdateTheme">Close</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="btn-box">
                     <button class="valid-btn" type="submit">Confirmer</button>
                     <button class="cancel-btn" @click="cancelUpdate">Annuler</button>
@@ -68,7 +93,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, reactive, toRaw } from 'vue';
 import useChannelStore from '../stores/channel-store';
 import { useRouter, useRoute } from "vue-router";
 import { toast } from 'vue3-toastify';
@@ -80,9 +105,11 @@ const router = useRouter();
 const modalContent = ref(null);
 const userAdd = ref('');
 const updateName = ref('');
-const updateImg = ref('');
+const updateImg = ref(currentChannel.img);
 const banMember = ref("");
 const route = useRoute();
+const showCustomModal = ref(false);
+const selectedThemes = ref([]);
 
 const notifyError = (string) => {
     toast(string, {
@@ -106,6 +133,8 @@ const properties = defineProps({
     }
 });
 
+const emits = defineEmits(['update:channel']);
+
 const channel = ref(currentChannel.value);
 const members = ref(channel.value.users);
 const token = properties.token
@@ -113,6 +142,30 @@ const openUpdateModal = ref(false);
 const openDeleteModal = ref(false);
 const openInvitModal = ref(false);
 const openBanModal = ref(false);
+const currentTheme = reactive({
+    primary_color: currentChannel.value.theme.primary_color,
+    primary_color_dark: currentChannel.value.theme.primary_color_dark,
+    accent_color: currentChannel.value.theme.accent_color,
+    text_color: currentChannel.value.theme.text_color,
+    accent_text_color: currentChannel.value.theme.accent_text_color,
+});
+
+
+const customColorLabels = {
+    primary_color: 'PRIMARY',
+    primary_color_dark: 'PRIMARY DARK',
+    accent_color: 'ACCENT',
+    text_color: 'TEXT',
+    accent_text_color: 'ACCENT TEXT',
+};
+
+const customColors = reactive({
+    primary_color: currentChannel.value.theme.primary_color,
+    primary_color_dark: currentChannel.value.theme.primary_color_dark,
+    accent_color: currentChannel.value.theme.accent_color,
+    text_color: currentChannel.value.theme.text_color,
+    accent_text_color: currentChannel.value.theme.accent_text_color,
+});
 
 watch(currentChannel, (newChannel) => {
     console.log("newChannel", JSON.stringify(newChannel, null, 2));
@@ -175,21 +228,39 @@ const cancelInvit = () => {
     openInvitModal.value = false;
 }
 
+const confirmUpdateTheme = () => {
+    showCustomModal.value = false;
+    selectedThemes.value = true;
+}
+
+const cancelUpdateTheme = () => {
+    showCustomModal.value = false;
+    selectedThemes.value = false;
+    resetTheme();
+}
+
+const resetTheme = () => {
+    customColors.value = currentTheme.value;
+}
+
 const submitUpdateForm = async () => {
 
-  
+    const rawColors = toRaw(customColors);
+    const channelNameInput = document.getElementById('channelName');
+    const channelImgInput = document.getElementById('channelImg');
+
     const params = {
-        name: updateName.value,
-        img: updateImg.value,
+        name: channelNameInput.value,
+        img: channelImgInput.value,
         theme :  { 
-          primary_color: "",
-          primary_color_dark: "",
-          accent_color: "", 
-          text_color: "",
-          accent_text_color: ""
+        primary_color: rawColors.primary_color,
+        primary_color_dark: rawColors.primary_color_dark,
+        accent_color: rawColors.accent_color, 
+        text_color: rawColors.text_color,
+        accent_text_color: rawColors.accent_text_color,
         } 
     }
-
+    
     const user = localStorage.getItem('username');
     const token = localStorage.getItem('token');
     const channelCreator = channel.value.creator;
@@ -197,17 +268,17 @@ const submitUpdateForm = async () => {
     console.log( token,  channelId, params)
 
     if(channelCreator === user){
-      const invitation = await channelStore.updateChannel(token,channelId,params);
-      openUpdateModal.value = false;
+        const invitation = await channelStore.updateChannel(token,channelId,params);
+        openUpdateModal.value = false;
         members.value.push(user);
         userAdd.value = '';
         currentChannel.value.name = params.name;
         currentChannel.value.img = params.img;
+        emits('update:channel');
     }else{
-      notifyError("Vous ne pouvez pas modifier les canaux que vous n'avez pas créés !");
+        notifyError("Vous ne pouvez pas modifier les canaux que vous n'avez pas créés !");
     }
 
-  
 }
 
 const submitForm = async () => {
@@ -407,6 +478,31 @@ const handleClickOutside = (e) => {
     background-color: rgba(58, 131, 15, 0.6);
 }
 
+.confirm-btn {
+    background-color: rgba(98, 221, 27, 0.822);
+    border: none;
+    outline-style: none;
+    color: white;
+    font-size: 1rem;
+    margin-right: 2px;
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.close-button {
+    background-color: rgba(221, 40, 27, 0.822);
+    border: none;
+    outline-style: none;
+    color: white;
+    font-size: 1rem;
+    margin-right: 2px;
+    cursor: pointer;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
 .ban-btn {
     background-color: #ff0000;
     color: #FFFFFF;
@@ -430,7 +526,7 @@ const handleClickOutside = (e) => {
     padding: 20px;
     border-radius: 10px;
     color: rgb(214, 213, 213);
-    width: 30%;
+    width: 45%;
 }
 
 .addUserForm {
@@ -462,5 +558,42 @@ const handleClickOutside = (e) => {
     padding: 1rem;
     background-color: rgb(214, 213, 213);
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.custom-theme-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-theme-modal button {
+    margin-right: 5px;
+}
+
+.custom-theme-modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+    height: 85%;
+    background-color: rgb(39, 39, 39);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+
+.custom-theme-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: rgb(214, 214, 214);
 }
 </style>

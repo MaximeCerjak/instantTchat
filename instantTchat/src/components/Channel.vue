@@ -34,8 +34,6 @@
 
                 </li>
             </ul>
-            <button @click="printChannels">Print channels</button>
-            <!-- a button root to create channel formular -->
             <button @click="createChannel">+</button>
         </div>  
     </div>
@@ -43,18 +41,15 @@
 
 <script setup>
 import useChannelStore from '../stores/channel-store.js';
-import useAuthStore from '../stores/auth-store.js';
 import useMessageStore from '../stores/message-store';
-import { ref, reactive, computed } from 'vue';
+import { reactive, computed } from 'vue';
 import router from '../router'
 
 
 const channelStore = useChannelStore();
-const authStore = useAuthStore();
 const messageStore = useMessageStore();
 
 const token = localStorage.getItem('token');
-const username = authStore.username;
 const channels = reactive([]);
 
 const myChannels = computed(() => {
@@ -85,13 +80,6 @@ const initialize = async () => {
         const dbChannels = await channelStore.fetchChannels(token);
         channels.push(...dbChannels);
     }
-}
-
-
-/*Function print channels in console*/
-const printChannels = async () => {
-    const channels = await channelStore.fetchChannels(token);
-    console.log(channels, username);
 }
 
 const createChannel = () => {
