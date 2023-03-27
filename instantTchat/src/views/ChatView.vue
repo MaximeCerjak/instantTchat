@@ -70,12 +70,11 @@ import Channel from '../components/Channel.vue'
 import ChannelParam from '../components/ChannelParam.vue';
 import useChannelStore from '../stores/channel-store.js';
 import useMessageStore from '../stores/message-store.js';
-import { reactive, computed, toRaw, watchEffect, watch, ref, nextTick } from 'vue';
+import { reactive, toRaw, watchEffect, watch, ref, nextTick, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-const listMessage = ref(null);
 
 const notifyError = (string) => {
     toast(string, {
@@ -86,6 +85,21 @@ const notifyError = (string) => {
         maxToasts: 20,
         theme: "dark",
     });
+}
+
+onMounted(() => {
+    window.addEventListener('message-received', handleNewMessage)
+});
+
+onUnmounted(() => {
+    window.removeEventListener('message-received', handleNewMessage)
+});
+
+const handleNewMessage = (event) => {
+    // Mettre à jour le composant avec le nouveau message reçu
+    const message = event.detail;
+    messages.push(message);
+    scrollToLastMessage();
 }
 
 const route = useRoute();
@@ -106,6 +120,7 @@ const showModeratorModal = ref(false);
 const modMessage = ref('');
 const selectedMessage = ref(null);
 const displayedMessages = ref(0);
+const listMessage = ref(null);
 
 watch(channelId, async (newValue) => {
     console.log('channelId:', newValue);
@@ -183,7 +198,6 @@ const sendMessage = async () => {
     } else {
         messageText.value = '';
         selectedImage.value = null;
-        await fetchMessages();
         await scrollToLastMessage();
     }
 };

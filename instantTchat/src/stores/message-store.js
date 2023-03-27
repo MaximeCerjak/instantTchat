@@ -12,6 +12,10 @@ const useMessageStore = defineStore({
     connectToWebSocket(id, token) {
       const ws = new WebSocket(`wss://edu.tardigrade.land/msg/ws/channel/${id}/token/${token}`);
       ws.onopen = (e) => { "WebSocket is open now."; };
+      ws.onmessage = (e) => {
+        const message = JSON.parse(e.data);
+        this.handleReceivedMessage(message);
+      };
     if(ws.readyState === 0){
       this.socket = ws;
     }
@@ -76,7 +80,13 @@ const useMessageStore = defineStore({
         console.error('Erreur lors de la mise à jour du message :', error);
         throw error;
       }
-    }
+    },
+    handleReceivedMessage(message) {
+      this.messages.push(message);
+
+      const event = new CustomEvent('message-received', { detail: message });
+      window.dispatchEvent(event);
+    },
   }
 });
 
