@@ -27,6 +27,7 @@ const useChannelStore = defineStore({
         },
         async createChannel(token, params) {
             try {
+              console.log(params)
                 const response = await api.put('/protected/channel', params, {
                     headers: {
                         'Authorization': `Bearer ${token}`

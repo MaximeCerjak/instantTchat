@@ -4,6 +4,8 @@
         <form @submit.prevent="createChannel" class="add-canal">
             <label for="name">Name</label>
             <input type="text" id="name" v-model="name" />
+            <label for="img">Image - URL</label>
+            <input type="text" id="img" v-model="img" />
             <div class="themes-choice-box">
                 <div v-for="(theme, index) in themes" :key="theme.id" class="theme-box">
                     <label :for="`theme-${index}`">{{ theme.themeName }}</label>
@@ -61,6 +63,7 @@ const token = localStorage.getItem('token');
 const username = localStorage.getItem('username');
 
 const name = ref('');
+const img = ref('');
 const users = ref('');
 const showCustomModal = ref(false);
 
@@ -128,7 +131,7 @@ const createChannel = async () => {
 
     const channel = {
         name: name.value,
-        img: "https://example.com/image.jpg",
+        img: img.value,
         users: users.value,
     };
 
@@ -152,7 +155,7 @@ const cancel = () => {
     padding: 1em;
     background-color : rgb(173, 173, 173);
     width : 500px;
-    height: 450px;
+    height: 530px;
     border-radius: 15px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
