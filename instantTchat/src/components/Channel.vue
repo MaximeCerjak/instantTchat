@@ -6,7 +6,14 @@
             <ul class="my-canals">
                 <li v-for="channel in myChannels" :key="channel.id" @click="showCanal(channel.id)">
                         
-                        <span class="avatar-block"><span class="avatar"><img class="img" :src="channel.img"></span></span>
+                        <span class="avatar-block"><span class="avatar">
+                          <span v-if="channel.img !== ''">
+                          <img class="img" :src="channel.img">
+                          </span>
+                          <span v-else>
+                            {{ channel.name.charAt(0).toUpperCase() }}
+                          </span>
+                        </span></span>
                         {{ channel.name }}
 
                 </li>
@@ -14,7 +21,13 @@
             <h3>Les canaux invités</h3>
             <ul class="other-canals">
                 <li v-for="channel in otherChannels" :key="channel.id" @click="showCanal(channel.id)">
-                        <span class="avatar-block"><span class="avatar"><img :src="channel.img"></span></span>
+                        <span class="avatar-block"><span class="avatar">                        
+                            <span v-if="channel.img !== ''">
+                              <img class="img" :src="channel.img">
+                            </span>
+                            <span v-else>
+                              {{ channel.name.charAt(0).toUpperCase() }}
+                            </span></span></span>
                         {{ channel.name }}
 
                 </li>
