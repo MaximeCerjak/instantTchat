@@ -107,7 +107,7 @@ const cancelDelete = () => {
 }
 
 const confirmDelete = async () => {
-    const deletion = await channelStore.deleteChannel(token, channel.value.id, channel.creator);
+    const deletion = await channelStore.deleteChannel(token, channel.value.id, channel.value.creator);
     console.log(deletion)
     if (!deletion) {
         notifyError("Vous ne pouvez supprimer que les canaux que vous avez créés !");
@@ -133,6 +133,8 @@ const confirmBan = async () => {
     const ban = await channelStore.removeUserFromChannel(token, banMember.value, channel.value.id, channelCreator);
     if (!ban) {
         notifyError("Vous ne pouvez bannir des membres que dans vos salons personels !");
+        openBanModal.value = false;
+        return;
     }
     openBanModal.value = false;
     members.value = members.value.filter(member => member !== banMember.value);

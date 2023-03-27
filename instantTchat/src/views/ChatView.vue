@@ -63,7 +63,6 @@
     import ChannelParam from '../components/ChannelParam.vue';
     import useChannelStore from '../stores/channel-store.js';
     import useMessageStore from '../stores/message-store.js';
-    // import useAuthStore from '../stores/auth-store.js';
     import { reactive, computed, toRaw, watchEffect, watch, ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
     import { toast } from 'vue3-toastify';
