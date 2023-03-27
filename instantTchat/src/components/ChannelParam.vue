@@ -9,7 +9,7 @@
         <div class="users-list">
             <h2>Users</h2>
             <ul>
-                <li v-for="member in members" :key="member.id" >
+                <li v-for="member in members" :key="member.id">
                     <button class="ban-btn" @click="showBan(member)">x</button>{{ member }}
                 </li>
             </ul>
@@ -226,15 +226,15 @@ const handleClickOutside = (e) => {
     justify-content: space-between;
     align-items: center;
     background-color: #000000;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    padding-top: 10px;
+    padding-bottom: 60px;
 }
 
 .users-list li {
     list-style: none;
     display: flex;
-}
-
-.users-list ul {
-    padding: 0px;
 }
 
 .delete-mod {
@@ -337,6 +337,7 @@ const handleClickOutside = (e) => {
     height: 25px;
     width: 25px;
     padding: 0px;
+    padding-bottom: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
