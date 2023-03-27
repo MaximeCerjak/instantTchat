@@ -197,6 +197,9 @@ const handleClickOutside = (e) => {
 }
 
 .handleChannel button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 50px;
     margin: 10px 0;
     border-radius: 10px;
@@ -221,6 +224,10 @@ const handleClickOutside = (e) => {
     justify-content: space-between;
     align-items: center;
     background-color: #000000;
+}
+
+.users-list ul {
+    list-style: none;
 }
 
 .delete-mod {
@@ -319,6 +326,10 @@ const handleClickOutside = (e) => {
     background-color: #ff0000;
     color: #FFFFFF;
     margin-right: 5px;
+    margin-bottom: 5px;
+    border-style: none;
+    border-radius: 5px;
+    padding: 2px 10px;
 }
 
 .mod-container {
