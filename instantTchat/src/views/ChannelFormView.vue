@@ -248,6 +248,10 @@ button:hover {
     align-items: center;
 }
 
+.custom-theme-modal button {
+    margin-right: 5px;
+}
+
 .custom-theme-modal-content {
     display: flex;
     flex-direction: column;

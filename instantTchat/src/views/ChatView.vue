@@ -330,6 +330,7 @@
         background-color: #59595966;
         border-radius: 10px;
         padding: 10px;
+        word-wrap: break-word;
     }
 
     .message-info {
