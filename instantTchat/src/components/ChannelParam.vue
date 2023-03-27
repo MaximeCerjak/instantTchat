@@ -2,14 +2,14 @@
     <div class="sidebar-channel-param">
         <div class="handleChannel">
             <h2 :style="{ color: channel?.theme?.accent_text_color }">{{ channel.creator }}</h2>
-            <h3 :style="{ color: channel?.theme?.accent_color }">{{channel.name}}</h3>
+            <h3 :style="{ color: channel?.theme?.accent_color }">{{ channel.name }}</h3>
             <button @click="showDelete">Supprimer le canal</button>
             <button @click="showInvit">Inviter des membres</button>
         </div>
         <div class="users-list">
             <h2>Users</h2>
             <ul>
-                <li v-for="member in members" :key="member.id">
+                <li v-for="member in members" :key="member.id" >
                     <button class="ban-btn" @click="showBan(member)">x</button>{{ member }}
                 </li>
             </ul>
@@ -223,6 +223,15 @@ const handleClickOutside = (e) => {
     background-color: #000000;
 }
 
+.users-list li {
+    list-style: none;
+    display: flex;
+}
+
+.users-list ul {
+    padding: 0px;
+}
+
 .delete-mod {
     position: absolute;
     z-index: 100;
@@ -319,6 +328,13 @@ const handleClickOutside = (e) => {
     background-color: #ff0000;
     color: #FFFFFF;
     margin-right: 5px;
+    border-radius: 13px;
+    height: 25px;
+    width: 25px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .mod-container {
