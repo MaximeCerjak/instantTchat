@@ -5,15 +5,31 @@
             <h3>Mes canaux</h3>
             <ul class="my-canals">
                 <li v-for="channel in myChannels" :key="channel.id" @click="showCanal(channel.id)">
+                        
+                        <span class="avatar-block"><span class="avatar">
+                          <span v-if="channel.img !== ''">
+                          <img class="img" :src="channel.img">
+                          </span>
+                          <span v-else>
+                            {{ channel.name.charAt(0).toUpperCase() }}
+                          </span>
+                        </span></span>
                         {{ channel.name }}
-                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
+
                 </li>
             </ul>
             <h3>Les canaux invités</h3>
             <ul class="other-canals">
                 <li v-for="channel in otherChannels" :key="channel.id" @click="showCanal(channel.id)">
+                        <span class="avatar-block"><span class="avatar">                        
+                            <span v-if="channel.img !== ''">
+                              <img class="img" :src="channel.img">
+                            </span>
+                            <span v-else>
+                              {{ channel.name.charAt(0).toUpperCase() }}
+                            </span></span></span>
                         {{ channel.name }}
-                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
+
                 </li>
             </ul>
             <button @click="printChannels">Print channels</button>
@@ -139,6 +155,11 @@ li {
 
 .avatar-block {
     margin: 0 auto;
+}
+.img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
 }
 
 router-link {

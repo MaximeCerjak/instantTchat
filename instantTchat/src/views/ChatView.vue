@@ -376,14 +376,15 @@ connectToWebSocket();
     flex-direction: column;
 }
 
-.message-box {
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
-    background-color: #59595966;
-    border-radius: 10px;
-    padding: 10px;
-}
+    .message-box {
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+        background-color: #59595966;
+        border-radius: 10px;
+        padding: 10px;
+        word-wrap: break-word;
+    }
 
 .message-info {
     display: flex;
