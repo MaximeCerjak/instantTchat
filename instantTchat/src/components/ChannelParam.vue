@@ -3,6 +3,7 @@
         <div class="handleChannel">
             <h2 :style="{ color: channel?.theme?.accent_text_color }">{{ channel.creator }}</h2>
             <h3 :style="{ color: channel?.theme?.accent_color }">{{ channel.name }}</h3>
+            <button @click="showUpdate">Modifier le canal</button>
             <button @click="showDelete">Supprimer le canal</button>
             <button @click="showInvit">Inviter des membres</button>
         </div>
@@ -13,6 +14,24 @@
                     <button class="ban-btn" @click="showBan(member)">x</button>{{ member }}
                 </li>
             </ul>
+        </div>
+    </div>
+    <div v-if="openUpdateModal" class="update-mod" @click="handleClickOutside">
+        <div ref="modalContent" class="mod-container">
+            <h2>Modifier le canal</h2>
+            <form @submit.prevent="submitUpdateForm" class="addUserForm">
+                <label for="channelName">Nom du channel</label>
+                
+                <input type="text" :value="currentChannel.name" readonly>
+                <input type="text" id="channelName" v-model="updateName">
+                <label for="channelImg">Image du channel</label>
+                <input type="text" :value="currentChannel.img" readonly>
+                <input type="text" id="channelImg" v-model="updateImg">
+                <div class="btn-box">
+                    <button class="valid-btn" type="submit">Confirmer</button>
+                    <button class="cancel-btn" @click="cancelUpdate">Annuler</button>
+                </div>
+            </form>
         </div>
     </div>
     <div v-if="openDeleteModal" class="delete-mod" @click="handleClickOutside">
@@ -60,6 +79,8 @@ const currentChannel = computed(() => channelStore.currentChannel);
 const router = useRouter();
 const modalContent = ref(null);
 const userAdd = ref('');
+const updateName = ref('');
+const updateImg = ref('');
 const banMember = ref("");
 const route = useRoute();
 
@@ -87,7 +108,8 @@ const properties = defineProps({
 
 const channel = ref(currentChannel.value);
 const members = ref(channel.value.users);
-const token = properties.token;
+const token = properties.token
+const openUpdateModal = ref(false);
 const openDeleteModal = ref(false);
 const openInvitModal = ref(false);
 const openBanModal = ref(false);
@@ -97,7 +119,12 @@ watch(currentChannel, (newChannel) => {
     channel.value = newChannel;
     members.value = newChannel.users;
 });
-
+const showUpdate = () => {
+    openUpdateModal.value = true;
+}
+const cancelUpdate = () => {
+    openUpdateModal.value = false;
+}
 const showDelete = () => {
     openDeleteModal.value = true;
 }
@@ -148,6 +175,39 @@ const cancelInvit = () => {
     openInvitModal.value = false;
 }
 
+const submitUpdateForm = async () => {
+
+  
+    const params = {
+        name: updateName.value,
+        img: updateImg.value,
+        theme :  { 
+          primary_color: "",
+          primary_color_dark: "",
+          accent_color: "", 
+          text_color: "",
+          accent_text_color: ""
+        } 
+    }
+
+    const user = localStorage.getItem('username');
+    const token = localStorage.getItem('token');
+    const channelCreator = channel.value.creator;
+    const channelId = channel.value.id;
+    console.log( token,  channelId, params)
+
+    if(channelCreator === user){
+      const invitation = await channelStore.updateChannel(token,channelId,params);
+      openUpdateModal.value = false;
+        members.value.push(user);
+        userAdd.value = '';
+    }else{
+      notifyError("Vous ne pouvez pas modifier les canaux que vous n'avez pas créés !");
+    }
+
+  
+}
+
 const submitForm = async () => {
     const params = {
         username: userAdd.value,
@@ -169,10 +229,12 @@ const submitForm = async () => {
     }
 }
 
+
 const handleClickOutside = (e) => {
     if (modalContent.value && !modalContent.value.contains(e.target)) {
         openDeleteModal.value = false;
         openInvitModal.value = false;
+        openUpdateModal.value = false;
     }
 }
 
@@ -235,6 +297,20 @@ const handleClickOutside = (e) => {
 .users-list li {
     list-style: none;
     display: flex;
+}
+
+.update-mod{
+    position: absolute;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .delete-mod {

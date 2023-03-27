@@ -2,6 +2,8 @@
     <div class="sidebar"> 
         <div class="sb-channels">
             <h2>Channels</h2>
+            <br />
+            <button @click="createChannel">+</button>
             <h3>Mes canaux</h3>
             <ul class="my-canals">
                 <li v-for="channel in myChannels" :key="channel.id" @click="showCanal(channel.id)">
