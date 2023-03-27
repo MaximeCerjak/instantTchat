@@ -10,7 +10,7 @@
                 <div v-if="message.image">
                     <img :src="message.image" alt="image" />
                 </div>
-                <div class="message-info" :style="{ color: currentChannel?.theme?.accent_color }">
+                <div class="message-info" :style="{ color: currentChannel?.theme?.accent_color, 'justify-content': message.author === username ? 'flex-end' : 'flex-start' }">
                     <div class="info-message">
                         <p>{{ message.author }}</p>
                         <p class="date-info">{{ formatDate(message.timestamp) }}</p>
@@ -20,9 +20,6 @@
                     </span>
                     <div class="moderator-modal" v-if="showModeratorModal">
                         <div class="moderator-modal-content">
-                            <div class="moderator-modal-header">
-                                <h2>Modération</h2>
-                            </div>
                             <div class="moderator-modal-body">
                                 <div class="moderator-box">
                                     <div class="header-moderator">
@@ -30,12 +27,12 @@
                                     </div>
                                     <form class="mod-form" @submit.prevent="submitMod">
                                         <textarea v-model="modMessage" :placeholder="modMessage"></textarea>
-                                        <button type="submit">Modifier</button>
+                                        <div class="moderator-modal-footer">
+                                            <button type="submit">Modifier</button>
+                                            <button class="close-button" @click="showModeratorModal = !showModeratorModal">Close</button>
+                                        </div>
                                     </form>
                                 </div>
-                            </div>
-                            <div class="moderator-modal-footer">
-                                <button class="close-button" @click="showModeratorModal = !showModeratorModal">Close</button>
                             </div>
                         </div>
                     </div>
@@ -337,7 +334,6 @@
 
     .message-info {
         display: flex;
-        justify-content: space-between;
         margin-bottom: 10px;
     }
 
@@ -369,13 +365,28 @@
 
     .moderator-modal {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        top: 20%;
+        left: 50%;
+        width: 30%;
+        height: 30%;
+        background-color: rgba(0, 0, 0, 0.693);
         display: flex;
         justify-content: center;
         align-items: center;
+        border-radius: 20px;
+    }
+
+    .mod-form textarea {
+        border-style: none;
+        border-radius: 10px;
+        padding: 5px;
+    }
+
+    .moderator-modal-footer button {
+        margin-right: 2px;
+        border-style: none;
+        border-radius: 20px;
+        padding: 5px 10px;
+        font-weight: bold;
     }
 </style>
