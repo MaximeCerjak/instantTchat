@@ -197,6 +197,9 @@ const handleClickOutside = (e) => {
 }
 
 .handleChannel button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 50px;
     margin: 10px 0;
     border-radius: 10px;
