@@ -7,7 +7,7 @@
             <button @click="showInvit">Inviter des membres</button>
         </div>
         <div class="users-list">
-            <h2>Users</h2>
+            <h2>Utilisateurs</h2>
             <ul>
                 <li v-for="member in members" :key="member.id">
                     <button class="ban-btn" @click="showBan(member)">x</button>{{ member }}

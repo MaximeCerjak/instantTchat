@@ -36,17 +36,17 @@ const useMessageStore = defineStore({
         return false;
       }
     },
-    async fetchMessages(channelId) {
+    async fetchMessages(channelId, offset = 0) {
         try {
           const token = localStorage.getItem('token');
 
-          const response = await api.get(`/protected/channel/${channelId}/messages/0`, {
+          const response = await api.get(`/protected/channel/${channelId}/messages/${offset}`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
           });
 
-          console.log('Messages récupérés avec succès !');
+          console.log(offset);
 
           // Ajout des messages à la liste des messages
           return response.data;
