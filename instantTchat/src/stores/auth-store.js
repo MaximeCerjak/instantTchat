@@ -3,7 +3,6 @@ import router from '../router/index.js'
 import { login, extendSession } from '../services/connexion/auth'
 
 
-
 const useAuthStore = defineStore({
     id: 'user',
     state: () => ({
@@ -40,8 +39,7 @@ const useAuthStore = defineStore({
         clearSession() {
             this.token = null
             this.username = null
-            // Arrêter le renouvellement de session
-            // stopSessionRenewal()
+            
             localStorage.removeItem('token');
             localStorage.removeItem('username');
             window.location.reload();

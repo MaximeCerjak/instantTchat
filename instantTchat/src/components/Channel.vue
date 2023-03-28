@@ -2,22 +2,38 @@
     <div class="sidebar"> 
         <div class="sb-channels">
             <h2>Channels</h2>
+            <br />
+            <button @click="createChannel">+</button>
             <h3>Mes canaux</h3>
             <ul class="my-canals">
                 <li v-for="channel in myChannels" :key="channel.id" @click="showCanal(channel.id)">
+                        
+                        <span class="avatar-block"><span class="avatar">
+                          <span v-if="channel.img !== ''">
+                          <img class="img" :src="channel.img">
+                          </span>
+                          <span v-else>
+                            {{ channel.name.charAt(0).toUpperCase() }}
+                          </span>
+                        </span></span>
                         {{ channel.name }}
-                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
+
                 </li>
             </ul>
             <h3>Les canaux invités</h3>
             <ul class="other-canals">
                 <li v-for="channel in otherChannels" :key="channel.id" @click="showCanal(channel.id)">
+                        <span class="avatar-block"><span class="avatar">                        
+                            <span v-if="channel.img !== ''">
+                              <img class="img" :src="channel.img">
+                            </span>
+                            <span v-else>
+                              {{ channel.name.charAt(0).toUpperCase() }}
+                            </span></span></span>
                         {{ channel.name }}
-                        <span class="avatar-block"><span class="avatar">{{ channel.name.charAt(0).toUpperCase() }}</span></span>
+
                 </li>
             </ul>
-            <button @click="printChannels">Print channels</button>
-            <!-- a button root to create channel formular -->
             <button @click="createChannel">+</button>
         </div>  
     </div>
@@ -25,18 +41,15 @@
 
 <script setup>
 import useChannelStore from '../stores/channel-store.js';
-import useAuthStore from '../stores/auth-store.js';
 import useMessageStore from '../stores/message-store';
-import { ref, reactive, computed } from 'vue';
+import { reactive, computed } from 'vue';
 import router from '../router'
 
 
 const channelStore = useChannelStore();
-const authStore = useAuthStore();
 const messageStore = useMessageStore();
 
 const token = localStorage.getItem('token');
-const username = authStore.username;
 const channels = reactive([]);
 
 const myChannels = computed(() => {
@@ -67,13 +80,6 @@ const initialize = async () => {
         const dbChannels = await channelStore.fetchChannels(token);
         channels.push(...dbChannels);
     }
-}
-
-
-/*Function print channels in console*/
-const printChannels = async () => {
-    const channels = await channelStore.fetchChannels(token);
-    console.log(channels, username);
 }
 
 const createChannel = () => {
@@ -139,6 +145,11 @@ li {
 
 .avatar-block {
     margin: 0 auto;
+}
+.img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
 }
 
 router-link {
