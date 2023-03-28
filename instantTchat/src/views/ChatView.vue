@@ -11,8 +11,8 @@
             </div>
             <div v-for="message in messages" :key="message.id" class="message-box"
             :style="{ backgroundColor: currentChannel?.theme?.primary_color_dark }">
-                <div v-if="message.image">
-                    <img :src="message.image" alt="image" />
+                <div v-if="message.Image">
+                    <img class="chat-img" :src="message.Image" alt="image" />
                 </div>
                 <div class="message-info"
                     :style="{ color: currentChannel?.theme?.accent_color, 'justify-content': message.author === username ? 'flex-end' : 'flex-start' }">
@@ -56,7 +56,7 @@
             </div>
         </div>
     </div>
-    <ChannelParam v-if="currentChannel" :users="users" :token="token" />
+    <ChannelParam v-if="currentChannel" :users="users" :token="token" @update:channel="refreshCurrentChannel"/>
 </template>
     
 <script setup>
@@ -197,17 +197,30 @@ const formatDate = (timestamp) => {
 
 
 const sendMessage = async () => {
-    const message = {
-        Text: messageText.value,
-    };
-    const newSend = await messageStore.sendMessageToWebSocket(message, channelId.value);
-    if (!newSend) {
+    let message;
+
+    const regex = /.(png|jpe?g|gif)$/i;
+    if(regex.test(messageText.value)) {
+        message = {
+            Image: messageText.value,
+        }
+        console.log(messageText.value);
+    } else if (messageText.value === "" || messageText.value === null) {
+        notifyError('Votre message ne peut être vide');
+        return;
+    } else {
+        message = {
+            Text: messageText.value,
+        };
+    }
+    const newSend = await messageStore.sendMessageToWebSocket(message,channelId.value);
+    if(!newSend) {
+        console.log(newSend);
         notifyError('Votre message ne peut être vide');
         return;
     } else {
         messageText.value = '';
         selectedImage.value = null;
-        await scrollToLastMessage();
     }
 };
 
@@ -344,6 +357,12 @@ connectToWebSocket();
     ;
 }
 
+.chat-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
 .material-icons {
     font-size: 1.5em;
     color: white;

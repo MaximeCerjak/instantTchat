@@ -22,7 +22,7 @@ const useMessageStore = defineStore({
       console.log(ws);
     },
     async sendMessageToWebSocket(message,id) {
-      if(message.Text !== "" && message.Text !== null && message.Text !== undefined){
+      if(message){
         try {
           const token = localStorage.getItem('token');
           const response = await api.post(`/protected/channel/${id}/message`, message, {
@@ -49,9 +49,6 @@ const useMessageStore = defineStore({
               Authorization: `Bearer ${token}`
             }
           });
-
-          console.log(offset);
-
           // Ajout des messages à la liste des messages
           return response.data;
         } catch (error) {
