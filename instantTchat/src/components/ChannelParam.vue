@@ -170,11 +170,13 @@ watch(currentChannel, (newChannel) => {
     channel.value = newChannel;
     members.value = newChannel.users;
 
-    customColors.primary_color = newChannel.theme.primary_color;
-    customColors.primary_color_dark = newChannel.theme.primary_color_dark;
-    customColors.accent_color = newChannel.theme.accent_color;
-    customColors.text_color = newChannel.theme.text_color;
-    customColors.accent_text_color = newChannel.theme.accent_text_color;
+    if(newChannel.theme) {
+        customColors.primary_color = newChannel.theme.primary_color;
+        customColors.primary_color_dark = newChannel.theme.primary_color_dark;
+        customColors.accent_color = newChannel.theme.accent_color;
+        customColors.text_color = newChannel.theme.text_color;
+        customColors.accent_text_color = newChannel.theme.accent_text_color;
+    }
 });
 
 const showUpdate = () => {
