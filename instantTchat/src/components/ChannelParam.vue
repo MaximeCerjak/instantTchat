@@ -104,8 +104,6 @@ const currentChannel = computed(() => channelStore.currentChannel);
 const router = useRouter();
 const modalContent = ref(null);
 const userAdd = ref('');
-const updateName = ref('');
-const updateImg = ref(currentChannel.img);
 const banMember = ref("");
 const route = useRoute();
 const showCustomModal = ref(false);
@@ -142,13 +140,13 @@ const openUpdateModal = ref(false);
 const openDeleteModal = ref(false);
 const openInvitModal = ref(false);
 const openBanModal = ref(false);
-const currentTheme = reactive({
-    primary_color: currentChannel.value.theme.primary_color,
-    primary_color_dark: currentChannel.value.theme.primary_color_dark,
-    accent_color: currentChannel.value.theme.accent_color,
-    text_color: currentChannel.value.theme.text_color,
-    accent_text_color: currentChannel.value.theme.accent_text_color,
-});
+// const currentTheme = reactive({
+//     primary_color: currentChannel.value.theme.primary_color,
+//     primary_color_dark: currentChannel.value.theme.primary_color_dark,
+//     accent_color: currentChannel.value.theme.accent_color,
+//     text_color: currentChannel.value.theme.text_color,
+//     accent_text_color: currentChannel.value.theme.accent_text_color,
+// });
 
 
 const customColorLabels = {
@@ -171,7 +169,14 @@ watch(currentChannel, (newChannel) => {
     console.log("newChannel", JSON.stringify(newChannel, null, 2));
     channel.value = newChannel;
     members.value = newChannel.users;
+
+    customColors.primary_color = newChannel.theme.primary_color;
+    customColors.primary_color_dark = newChannel.theme.primary_color_dark;
+    customColors.accent_color = newChannel.theme.accent_color;
+    customColors.text_color = newChannel.theme.text_color;
+    customColors.accent_text_color = newChannel.theme.accent_text_color;
 });
+
 const showUpdate = () => {
     openUpdateModal.value = true;
 }
@@ -240,7 +245,11 @@ const cancelUpdateTheme = () => {
 }
 
 const resetTheme = () => {
-    customColors.value = currentTheme.value;
+    customColors.primary_color = currentChannel.value.theme.primary_color;
+    customColors.primary_color_dark = currentChannel.value.theme.primary_color_dark;
+    customColors.accent_color = currentChannel.value.theme.accent_color;
+    customColors.text_color = currentChannel.value.theme.text_color;
+    customColors.accent_text_color = currentChannel.value.theme.accent_text_color;
 }
 
 const submitUpdateForm = async () => {
